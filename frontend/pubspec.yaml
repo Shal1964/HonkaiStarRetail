@@ -66,6 +66,11 @@ flutter:
   - assets/images/lightConesIcon.png
   - assets/images/GalacticResourcesIcon.png
   - assets/images/LC_AfterTheCharmonyFall.png
+  - assets/images/LC_FlamesAfar.png
+  - assets/images/LC_PlanetaryRendezvous.png
+  - assets/images/GR_Credit.png
+  - assets/images/GR_StellarJade.png
+  - assets/images/GR_TrailblazeEXP.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

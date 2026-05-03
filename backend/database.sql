@@ -49,13 +49,12 @@ INSERT INTO users (email, password, name, role) VALUES
 
 -- Seed light_cones (ada rarity)
 INSERT INTO light_cones (name, type, description, stock, image, price, rarity) VALUES
-('After the Charmony Fall',  'The Hunt',    'A 5-star Light Cone that greatly boosts ATK.', 5, 'assets/images/LC_AfterTheCharmonyFall.png',  15000, 5),
-('Flames Afar',    'Destruction', 'A 5-star Light Cone for damage dealers.',       3, 'https://picsum.photos/seed/flames/300/300', 18000, 5),
-('Arrow on Wind',  'The Hunt',    'A 4-star Light Cone for follow-up attacks.',    10,'https://picsum.photos/seed/arrow/300/300',  8000,  4);
+('After the Charmony Fall',  'The Hunt',    'A 5-star Light Cone that greatly boosts ATK.', 5,'assets/images/LC_AfterTheCharmonyFall.png',  15000, 5),
+('Flames Afar',    'Destruction', 'A 5-star Light Cone for damage dealers.',       3, 'assets/images/LC_FlamesAfar.png', 18000, 5),
+('PlanetaryRendezvous',  'The Hunt',    'A 4-star Light Cone for follow-up attacks.',    10,'assets/images/LC_PlanetaryRendezvous.png',  8000,  4);
 
 -- Seed galactic_resources (tanpa rarity)
 INSERT INTO galactic_resources (name, type, description, stock, image, price) VALUES
-('Stellar Jade',    'Currency', 'Precious jade used for Warps.',                     200,  'https://picsum.photos/seed/jade/300/300',   1600),
-('Trailblaze EXP',  'Material', 'Used to increase your Trailblaze Level.',           500,  'https://picsum.photos/seed/exp/300/300',    500),
-('Credit',          'Currency', 'Universal currency across the galaxy.',             9999, 'https://picsum.photos/seed/credit/300/300', 100),
-('Condensed Aether','Material', 'Crystallized aether for character ascension.',      80,   'https://picsum.photos/seed/aether/300/300', 2000);
+('Stellar Jade',    'Currency', 'Precious jade used for Warps.',                     200,  'assets/images/GR_Credit.png',   1600),
+('Trailblaze EXP',  'Material', 'Used to increase your Trailblaze Level.',           500,  'assets/images/GR_StellarJade.png',    500),
+('Credit',          'Currency', 'Universal currency across the galaxy.',             9999, 'assets/images/GR_TrailblazeEXP.png', 100),
