@@ -672,7 +672,7 @@ class _RecentLightConeCard extends StatelessWidget {
                 child: item.imagePath != null && item.imagePath!.isNotEmpty
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: Image.network(
+                        child: Image.asset(
                           item.imagePath!,
                           fit: BoxFit.cover,
                           errorBuilder: (_, __, ___) => const Center(
@@ -786,7 +786,7 @@ class _RecentGalacticResourceCard extends StatelessWidget {
                 child: item.imagePath != null && item.imagePath!.isNotEmpty
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: Image.network(
+                        child: Image.asset(
                           item.imagePath!,
                           fit: BoxFit.cover,
                           errorBuilder: (_, __, ___) => const Center(
