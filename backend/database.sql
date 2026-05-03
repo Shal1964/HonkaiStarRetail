@@ -47,13 +47,13 @@ INSERT INTO users (email, password, name, role) VALUES
 ('admin@hsr.com', 'admin123', 'Admin', 'admin'),
 ('user@hsr.com',  'user123',  'Trailblazer', 'user');
 
--- Seed light_cones (ada rarity)
+-- Seed light_cones
 INSERT INTO light_cones (name, type, description, stock, image, price, rarity) VALUES
 ('After the Charmony Fall',  'The Hunt',    'A 5-star Light Cone that greatly boosts ATK.', 5,'assets/images/LC_AfterTheCharmonyFall.png',  15000, 5),
 ('Flames Afar',    'Destruction', 'A 5-star Light Cone for damage dealers.',       3, 'assets/images/LC_FlamesAfar.png', 18000, 5),
 ('PlanetaryRendezvous',  'The Hunt',    'A 4-star Light Cone for follow-up attacks.',    10,'assets/images/LC_PlanetaryRendezvous.png',  8000,  4);
 
--- Seed galactic_resources (tanpa rarity)
+-- Seed galactic_resources 
 INSERT INTO galactic_resources (name, type, description, stock, image, price) VALUES
 ('Stellar Jade',    'Currency', 'Precious jade used for Warps.',                     200,  'assets/images/GR_Credit.png',   1600),
 ('Trailblaze EXP',  'Material', 'Used to increase your Trailblaze Level.',           500,  'assets/images/GR_StellarJade.png',    500),
