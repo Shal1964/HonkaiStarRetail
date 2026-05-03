@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../session.dart';
 import 'detail_page.dart';
-import 'admin_page.dart';
+import 'admin_dashboard.dart';
 import 'login_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () async {
                 await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const AdminPage()),
+                  MaterialPageRoute(builder: (_) => const AdminDashboard()),
                 );
                 fetchResources(); // Refresh after admin changes
               },

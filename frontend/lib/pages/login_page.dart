@@ -925,7 +925,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../session.dart';
 import 'register_page.dart';
 import 'home_page.dart';
-import 'admin_page.dart';
+import 'admin_dashboard.dart';
 //import 'admin_dashboard.dart'; // ← tambahan import
 
 class LoginPage extends StatefulWidget {
@@ -1020,7 +1020,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
         if (Session.role == 'admin') {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) => const AdminPage()),
+            MaterialPageRoute(builder: (_) => const AdminDashboard()),
           );
         } else {
           Navigator.pushReplacement(
@@ -1081,7 +1081,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
         if (Session.role == 'admin') {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) => const AdminPage()),
+            MaterialPageRoute(builder: (_) => const AdminDashboard()),
           );
         } else {
           Navigator.pushReplacement(
