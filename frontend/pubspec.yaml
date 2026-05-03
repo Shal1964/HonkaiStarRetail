@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  provider: ^6.1.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -74,9 +75,17 @@ flutter:
   - assets/images/TheHunt.png
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+  - assets/images/galaxy_bg.png
+  - assets/images/lightConesIcon.png
+  - assets/images/GalacticResourcesIcon.png
+  - assets/images/LC_AfterTheCharmonyFall.png
+  - assets/images/LC_FlamesAfar.png
+  - assets/images/LC_PlanetaryRendezvous.png
+  - assets/images/GR_Credit.png
+  - assets/images/GR_StellarJade.png
+  - assets/images/GR_TrailblazeEXP.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
