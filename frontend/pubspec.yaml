@@ -64,6 +64,14 @@ flutter:
   - assets/images/google.png
   - assets/images/twitter.png
   - assets/images/facebook.png
+  - assets/images/Abundance.png
+  - assets/images/Destruction.png
+  - assets/images/Erudition.png
+  - assets/images/Explore_bg.png
+  - assets/images/Harmony.png
+  - assets/images/Nihility.png
+  - assets/images/Preservation.png
+  - assets/images/TheHunt.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
