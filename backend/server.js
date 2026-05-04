@@ -128,3 +128,33 @@ app.post('/auth/login', (req, res) => {
     });
   });
 });
+
+
+// UNTUK SIGN UP
+
+app.post('/auth/register', (req, res) => {
+  console.log('REGISTER HIT', req.body);
+  const { name, email, password } = req.body;
+
+  // cek email sudah ada atau belum
+  const checkSql = 'SELECT * FROM users WHERE email = ?';
+  db.query(checkSql, [email], (err, results) => {
+    if (err) return res.status(500).json({ error: 'Server error' });
+
+    if (results.length > 0) {
+      return res.status(400).json({ error: 'Email sudah terdaftar' });
+    }
+
+    // INSERT USER (ROLE OTOMATIS USER)
+    const insertSql = 'INSERT INTO users (name, email, password) VALUES (?, ?, ?)';
+
+    db.query(insertSql, [name, email, password], (err, result) => {
+      if (err) return res.status(500).json({ error: 'Gagal register' });
+
+      res.json({
+        message: 'Register berhasil',
+        userId: result.insertId
+      });
+    });
+  });
+});
