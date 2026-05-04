@@ -61,10 +61,28 @@ app.post('/light-cones', verifyToken, (req, res) => {
 });
 
 app.put('/light-cones/:id', verifyToken, (req, res) => {
-    // Implementasi UPDATE
+  const { id } = req.params;
+  const { name, type, description, stock, image, price, rarity } = req.body;
+  
+  const sql = 'UPDATE light_cones SET name = ?, type = ?, description = ?, stock = ?, image = ?, price = ?, rarity = ? WHERE id = ?';
+  db.query(sql, [name, type, description, stock, image, price, rarity, id], (err, result) => {
+    if (err) return res.status(500).json({ error: 'Server error saat update Light Cone' });
+    if (result.affectedRows === 0) return res.status(404).json({ error: 'Light Cone tidak ditemukan' });
+    
+    res.json({ message: 'Light Cone berhasil diupdate' });
+  });
 });
+
 app.delete('/light-cones/:id', verifyToken, (req, res) => {
-    // Implementasi DELETE
+  const { id } = req.params;
+  
+  const sql = 'DELETE FROM light_cones WHERE id = ?';
+  db.query(sql, [id], (err, result) => {
+    if (err) return res.status(500).json({ error: 'Server error saat menghapus Light Cone' });
+    if (result.affectedRows === 0) return res.status(404).json({ error: 'Light Cone tidak ditemukan' });
+    
+    res.json({ message: 'Light Cone berhasil dihapus' });
+  });
 });
 
 // ============================================
@@ -88,10 +106,28 @@ app.post('/galactic-resources', verifyToken, (req, res) => {
 });
 
 app.put('/galactic-resources/:id', verifyToken, (req, res) => {
-     // Implementasi UPDATE
+  const { id } = req.params;
+  const { name, type, description, stock, image, price } = req.body; // Tanpa rarity
+  
+  const sql = 'UPDATE galactic_resources SET name = ?, type = ?, description = ?, stock = ?, image = ?, price = ? WHERE id = ?';
+  db.query(sql, [name, type, description, stock, image, price, id], (err, result) => {
+    if (err) return res.status(500).json({ error: 'Server error saat update Galactic Resource' });
+    if (result.affectedRows === 0) return res.status(404).json({ error: 'Galactic Resource tidak ditemukan' });
+    
+    res.json({ message: 'Galactic Resource berhasil diupdate' });
+  });
 });
+
 app.delete('/galactic-resources/:id', verifyToken, (req, res) => {
-     // Implementasi DELETE
+  const { id } = req.params;
+  
+  const sql = 'DELETE FROM galactic_resources WHERE id = ?';
+  db.query(sql, [id], (err, result) => {
+    if (err) return res.status(500).json({ error: 'Server error saat menghapus Galactic Resource' });
+    if (result.affectedRows === 0) return res.status(404).json({ error: 'Galactic Resource tidak ditemukan' });
+    
+    res.json({ message: 'Galactic Resource berhasil dihapus' });
+  });
 });
 
 app.listen(PORT,() => {
