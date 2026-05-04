@@ -55,16 +55,23 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8)),
             ),
-            onPressed: () {
+            // UBAH JADI ASYNC DI SINI
+            onPressed: () async {
               final newStock = int.tryParse(controller.text);
               if (newStock != null) {
-                // Update stock
-                item.stock = newStock;
-                // Panggil setState untuk update UI lokal
-                // Jika provider Anda punya method updateItem, panggil di sini
-                setState(() {});
+                // Panggil provider untuk update ke Database Backend secara permanen!
+                final success = await context.read<ItemProvider>().editGalacticResource(
+                  item.id, 
+                  stock: newStock
+                );
+
+                if (success && ctx.mounted) {
+                  ScaffoldMessenger.of(ctx).showSnackBar(
+                    const SnackBar(content: Text('Stock berhasil diupdate di database!')),
+                  );
+                }
               }
-              Navigator.of(ctx).pop();
+              if (ctx.mounted) Navigator.of(ctx).pop();
             },
             child: const Text('Save'),
           ),

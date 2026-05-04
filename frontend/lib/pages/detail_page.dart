@@ -569,8 +569,9 @@ class _LightConeDetail extends StatelessWidget {
 
   void _onCheckout(BuildContext context) {
     if (item.stock < qty) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Stock tidak cukup!')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Checkout failed. Insufficient stock.')),
+      );
       return;
     }
     showDialog(
@@ -580,12 +581,22 @@ class _LightConeDetail extends StatelessWidget {
         qty: qty,
         total: item.price * qty,
         onConfirm: () async {
-          Navigator.pop(context);
+          Navigator.pop(context); // Tutup dialog konfirmasi
+          
+          // Mengurangi stok secara permanen di database
           final ok = await provider.editLightCone(item.id, stock: item.stock - qty);
-          if (ok && context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Berhasil membeli ${qty}x ${item.name}!')));
-            Navigator.pop(context);
+          
+          if (context.mounted) {
+            if (ok) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Checkout successful! Stock updated.')),
+              );
+              Navigator.pop(context); // Kembali ke halaman Home setelah sukses
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Checkout failed. Please try again.')),
+              );
+            }
           }
         },
       ),
@@ -776,11 +787,11 @@ class _GalacticDetail extends StatelessWidget {
       ),
     );
   }
-
   void _onCheckout(BuildContext context) {
     if (item.stock < qty) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Stock tidak cukup!')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Checkout failed. Insufficient stock.')),
+      );
       return;
     }
     showDialog(
@@ -790,17 +801,29 @@ class _GalacticDetail extends StatelessWidget {
         qty: qty,
         total: item.price * qty,
         onConfirm: () async {
-          Navigator.pop(context);
+          Navigator.pop(context); // Tutup dialog konfirmasi
+          
+          // Mengurangi stok secara permanen di database
           final ok = await provider.editGalacticResource(item.id, stock: item.stock - qty);
-          if (ok && context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Berhasil membeli ${qty}x ${item.name}!')));
-            Navigator.pop(context);
+          
+          if (context.mounted) {
+            if (ok) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Checkout successful! Stock updated.')),
+              );
+              Navigator.pop(context); // Kembali ke halaman Home setelah sukses
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Checkout failed. Please try again.')),
+              );
+            }
           }
         },
       ),
     );
   }
+  
+  
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
