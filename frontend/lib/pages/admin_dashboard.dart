@@ -30,225 +30,136 @@ class AdminDashboard extends StatelessWidget {
     });
   }
 
-  // ════════════════════════════════════════════════════════════════════════════
-  // EDIT DIALOG — Light Cone (punya rarity int)
-  // ════════════════════════════════════════════════════════════════════════════
+  // EDIT DIALOG — Light Cone 
   void _showEditLightCone(BuildContext context, LightConeModel item) {
-    final provider        = context.read<ItemProvider>();
-    final nameController  = TextEditingController(text: item.name);
-    final stockController = TextEditingController(text: item.stock.toString());
-    int selectedRarity    = item.rarity; // 3, 4, atau 5
+    final TextEditingController controller = TextEditingController(text: item.stock.toString());
 
     showDialog(
       context: context,
-      builder: (ctx) {
-        return StatefulBuilder(
-          builder: (ctx, setDialogState) {
-            return AlertDialog(
-              backgroundColor: const Color(0xFF1E1433),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-                side: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
-              ),
-              title: const Text(
-                'Edit Light Cone',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              content: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Field Nama
-                    const Text('Nama', style: TextStyle(color: Colors.white70, fontSize: 12)),
-                    const SizedBox(height: 6),
-                    TextField(
-                      controller: nameController,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white.withValues(alpha: 0.08),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide.none,
-                        ),
-                        hintText: 'Nama light cone...',
-                        hintStyle: const TextStyle(color: Colors.white38),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Field Stock
-                    const Text('Stock', style: TextStyle(color: Colors.white70, fontSize: 12)),
-                    const SizedBox(height: 6),
-                    TextField(
-                      controller: stockController,
-                      style: const TextStyle(color: Colors.white),
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white.withValues(alpha: 0.08),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide.none,
-                        ),
-                        hintText: 'Jumlah stock...',
-                        hintStyle: const TextStyle(color: Colors.white38),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Rarity Bintang (3/4/5 saja)
-                    const Text('Rarity', style: TextStyle(color: Colors.white70, fontSize: 12)),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: List.generate(5, (i) {
-                        return GestureDetector(
-                          onTap: () => setDialogState(() => selectedRarity = i + 1),
-                          child: Icon(
-                            i < selectedRarity ? Icons.star : Icons.star_border,
-                            color: const Color(0xFFFFCC00),
-                            size: 28,
-                          ),
-                        );
-                      }),
-                    ),
-                  ],
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(ctx),
-                  child: const Text('Batal', style: TextStyle(color: Colors.white54)),
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFB57BFF),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  onPressed: () async {
-                    final newName  = nameController.text.trim();
-                    final newStock = int.tryParse(stockController.text.trim());
-                    if (newName.isEmpty || newStock == null) return;
-
-                    Navigator.pop(ctx);
-
-                    await provider.editLightCone(
-                      item.id,
-                      name:   newName,
-                      stock:  newStock,
-                      rarity: selectedRarity,
-                    );
-                  },
-                  child: const Text('Simpan', style: TextStyle(color: Colors.white)),
-                ),
-              ],
-            );
-          },
-        );
-      },
+      builder: (ctx) => AlertDialog(
+        backgroundColor: const Color(0xFF1E1A3A),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text(
+          'Edit Stock',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        content: TextField(
+          controller: controller,
+          keyboardType: TextInputType.number,
+          style: const TextStyle(color: Colors.white),
+          decoration: InputDecoration(
+            labelText: 'Stock',
+            labelStyle: const TextStyle(color: Colors.white60),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Colors.white30),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Color(0xFFB57BFF)),
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Cancel', style: TextStyle(color: Colors.white54)),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF7B4FD4),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            ),
+            onPressed: () async {
+              final newStock = int.tryParse(controller.text);
+              if (newStock != null) {
+                // Update ke Database Backend secara permanen
+                final success = await context.read<ItemProvider>().editLightCone(
+                  item.id, 
+                  stock: newStock
+                );
+                
+                if (success && ctx.mounted) {
+                  ScaffoldMessenger.of(ctx).showSnackBar(
+                    const SnackBar(content: Text('Stock Light Cone berhasil diupdate!')),
+                  );
+                }
+              }
+              if (ctx.mounted) Navigator.of(ctx).pop();
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
     );
   }
 
+
   // ════════════════════════════════════════════════════════════════════════════
-  // EDIT DIALOG — Galactic Resource (tidak punya rarity)
+  // EDIT DIALOG — Galactic Resource (Sama persis dengan admin_galacticResources)
   // ════════════════════════════════════════════════════════════════════════════
   void _showEditGalacticResource(BuildContext context, GalacticResourceModel item) {
-    final provider        = context.read<ItemProvider>();
-    final nameController  = TextEditingController(text: item.name);
-    final stockController = TextEditingController(text: item.stock.toString());
+    final TextEditingController controller = TextEditingController(text: item.stock.toString());
 
     showDialog(
       context: context,
-      builder: (ctx) {
-        return AlertDialog(
-          backgroundColor: const Color(0xFF1E1433),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-            side: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
-          ),
-          title: const Text(
-            'Edit Galactic Resource',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Field Nama
-                const Text('Nama', style: TextStyle(color: Colors.white70, fontSize: 12)),
-                const SizedBox(height: 6),
-                TextField(
-                  controller: nameController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white.withValues(alpha: 0.08),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none,
-                    ),
-                    hintText: 'Nama resource...',
-                    hintStyle: const TextStyle(color: Colors.white38),
-                  ),
-                ),
-                const SizedBox(height: 16),
-
-                // Field Stock
-                const Text('Stock', style: TextStyle(color: Colors.white70, fontSize: 12)),
-                const SizedBox(height: 6),
-                TextField(
-                  controller: stockController,
-                  style: const TextStyle(color: Colors.white),
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white.withValues(alpha: 0.08),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none,
-                    ),
-                    hintText: 'Jumlah stock...',
-                    hintStyle: const TextStyle(color: Colors.white38),
-                  ),
-                ),
-                // tidak ada rarity di sini
-              ],
+      builder: (ctx) => AlertDialog(
+        backgroundColor: const Color(0xFF1E1A3A),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text(
+          'Edit Stock',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        content: TextField(
+          controller: controller,
+          keyboardType: TextInputType.number,
+          style: const TextStyle(color: Colors.white),
+          decoration: InputDecoration(
+            labelText: 'Stock',
+            labelStyle: const TextStyle(color: Colors.white60),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Colors.white30),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Color(0xFFB57BFF)),
             ),
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: const Text('Batal', style: TextStyle(color: Colors.white54)),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Cancel', style: TextStyle(color: Colors.white54)),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF7B4FD4),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFB57BFF),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              onPressed: () async {
-                final newName  = nameController.text.trim();
-                final newStock = int.tryParse(stockController.text.trim());
-                if (newName.isEmpty || newStock == null) return;
-
-                Navigator.pop(ctx);
-
-                await provider.editGalacticResource(
-                  item.id,
-                  name:  newName,
-                  stock: newStock,
+            onPressed: () async {
+              final newStock = int.tryParse(controller.text);
+              if (newStock != null) {
+                // Update ke Database Backend secara permanen
+                final success = await context.read<ItemProvider>().editGalacticResource(
+                  item.id, 
+                  stock: newStock
                 );
-              },
-              child: const Text('Simpan', style: TextStyle(color: Colors.white)),
-            ),
-          ],
-        );
-      },
+
+                if (success && ctx.mounted) {
+                  ScaffoldMessenger.of(ctx).showSnackBar(
+                    const SnackBar(content: Text('Stock Galactic Resource berhasil diupdate!')),
+                  );
+                }
+              }
+              if (ctx.mounted) Navigator.of(ctx).pop();
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
     );
   }
 

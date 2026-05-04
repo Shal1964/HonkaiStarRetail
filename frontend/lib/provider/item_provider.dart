@@ -375,4 +375,42 @@ class ItemProvider extends ChangeNotifier {
       return false;
     }
   }
+// ════════════════════════════════════════════════════════════════════════════
+// CHECKOUT - CARA CEPAT (Kalkulasi di Frontend)
+// ════════════════════════════════════════════════════════════════════════════
+
+Future<bool> checkoutSingleItem(int id, String itemKind, int quantityBought) async {
+  if (itemKind == 'lightCone') {
+    // Cari item saat ini
+    final index = _lightCones.indexWhere((e) => e.id == id);
+    if (index == -1) return false;
+    
+    // Hitung stok baru
+    final currentStock = _lightCones[index].stock;
+    if (currentStock < quantityBought) return false; // Stok tidak cukup
+    
+    final newStock = currentStock - quantityBought;
+    
+    // Gunakan fungsi edit yang sudah ada
+    return await editLightCone(id, stock: newStock);
+
+  } else if (itemKind == 'galacticResource') {
+    final index = _galacticResources.indexWhere((e) => e.id == id);
+    if (index == -1) return false;
+
+    final currentStock = _galacticResources[index].stock;
+    if (currentStock < quantityBought) return false; 
+    
+    final newStock = currentStock - quantityBought;
+    
+    return await editGalacticResource(id, stock: newStock);
+  }
+  
+  return false;
+}
+
+
+
+
+
 }
