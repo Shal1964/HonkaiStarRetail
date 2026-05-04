@@ -142,44 +142,57 @@ class ItemProvider extends ChangeNotifier {
   // ── LOAD: Ambil semua data dari DB ──────────────────────────────────────
   // Memanggil dua endpoint sekaligus secara paralel agar lebih cepat
   Future<void> loadItems() async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
+  _isLoading = true;
+  _error = null;
+  notifyListeners();
 
-    try {
-      // Jalankan kedua request secara bersamaan
-      final results = await Future.wait([
-        http.get(Uri.parse('${Session.baseUrl}/light-cones')),
-        http.get(Uri.parse('${Session.baseUrl}/galactic-resources')),
-      ]);
+  try {
+    final results = await Future.wait([
+      http.get(Uri.parse('${Session.baseUrl}/light-cones')),
+      http.get(Uri.parse('${Session.baseUrl}/galactic-resources')),
+    ]);
 
-      final lcResponse  = results[0];
-      final grResponse  = results[1];
+    final lcResponse  = results[0];
+    final grResponse  = results[1];
 
-      // Parse Light Cones
-      if (lcResponse.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(lcResponse.body);
-        _lightCones = data.map((e) => LightConeModel.fromJson(e)).toList();
-      } else {
-        _error = 'Gagal memuat Light Cones (${lcResponse.statusCode})';
-      }
+    // ✅ TAMBAHAN DEBUG (TIDAK MENGUBAH LOGIC)
+    print("LIGHT STATUS: ${lcResponse.statusCode}");
+    print("LIGHT BODY: ${lcResponse.body}");
+    print("GALACTIC STATUS: ${grResponse.statusCode}");
+    print("GALACTIC BODY: ${grResponse.body}");
 
-      // Parse Galactic Resources
-      if (grResponse.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(grResponse.body);
-        _galacticResources = data.map((e) => GalacticResourceModel.fromJson(e)).toList();
-      } else {
-        // Gabungkan pesan error jika keduanya gagal
-        _error = (_error != null ? '$_error | ' : '') +
-            'Gagal memuat Galactic Resources (${grResponse.statusCode})';
-      }
-    } catch (e) {
-      _error = 'Tidak dapat terhubung ke server.';
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+    // Parse Light Cones
+    if (lcResponse.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(lcResponse.body);
+      _lightCones = data.map((e) => LightConeModel.fromJson(e)).toList();
+
+      // ✅ TAMBAHAN DEBUG
+      print("LIGHT COUNT: ${_lightCones.length}");
+    } else {
+      _error = 'Gagal memuat Light Cones (${lcResponse.statusCode})';
     }
+
+    // Parse Galactic Resources
+    if (grResponse.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(grResponse.body);
+      _galacticResources = data.map((e) => GalacticResourceModel.fromJson(e)).toList();
+
+      // ✅ TAMBAHAN DEBUG
+      print("GALACTIC COUNT: ${_galacticResources.length}");
+    } else {
+      _error = (_error != null ? '$_error | ' : '') +
+          'Gagal memuat Galactic Resources (${grResponse.statusCode})';
+    }
+
+  } catch (e) {
+    print("ERROR CONNECT: $e");
+
+    _error = 'Tidak dapat terhubung ke server.';
+  } finally {
+    _isLoading = false;
+    notifyListeners();
   }
+}
 
   // ════════════════════════════════════════════════════════════════════════════
   // LIGHT CONE — CRUD

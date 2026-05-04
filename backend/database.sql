@@ -57,4 +57,4 @@ INSERT INTO light_cones (name, type, description, stock, image, price, rarity) V
 INSERT INTO galactic_resources (name, type, description, stock, image, price) VALUES
 ('Stellar Jade',    'Currency', 'Precious jade used for Warps.',                     200,  'assets/images/GR_Credit.png',   1600),
 ('Trailblaze EXP',  'Material', 'Used to increase your Trailblaze Level.',           500,  'assets/images/GR_StellarJade.png',    500),
-('Credit',          'Currency', 'Universal currency across the galaxy.',             9999, 'assets/images/GR_TrailblazeEXP.png', 100),
+('Credit',          'Currency', 'Universal currency across the galaxy.',             9999, 'assets/images/GR_TrailblazeEXP.png', 100);

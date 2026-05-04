@@ -94,6 +94,37 @@ app.delete('/galactic-resources/:id', verifyToken, (req, res) => {
      // Implementasi DELETE
 });
 
-app.listen(PORT, () => {
+app.listen(PORT,() => {
   console.log(`Astral Express server running on port ${PORT}`);
+});
+
+//AUTH LOGIN
+app.post('/auth/login', (req, res) => {
+  const { email, password } = req.body;
+
+  const sql = 'SELECT * FROM users WHERE email = ?';
+  db.query(sql, [email], (err, results) => {
+    if (err) return res.status(500).json({ error: 'Server error' });
+
+    if (results.length === 0) {
+      return res.status(401).json({ error: 'User tidak ditemukan' });
+    }
+
+    const user = results[0];
+
+    // contoh password plain (sementara)
+    if (user.password !== password) {
+      return res.status(401).json({ error: 'Password salah' });
+    }
+
+    // generate token
+    const token = crypto.randomBytes(16).toString('hex');
+    tokens[token] = { id: user.id, role: user.role };
+
+    res.json({
+      token,
+      role: user.role,
+      name: user.name
+    });
+  });
 });
