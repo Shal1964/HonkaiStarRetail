@@ -165,9 +165,6 @@ app.post('/auth/login', (req, res) => {
   });
 });
 
-app.listen(PORT,() => {
-  console.log(`Astral Express server running on port ${PORT}`);
-
 // UNTUK SIGN UP
 
 app.post('/auth/register', (req, res) => {
@@ -195,4 +192,8 @@ app.post('/auth/register', (req, res) => {
       });
     });
   });
+});
+
+app.listen(PORT,() => {
+  console.log(`Astral Express server running on port ${PORT}`);
 });
