@@ -55,7 +55,10 @@ app.post('/light-cones', verifyToken, (req, res) => {
   const { name, type, description, stock, image, price, rarity } = req.body;
   const sql = 'INSERT INTO light_cones (name, type, description, stock, image, price, rarity) VALUES (?, ?, ?, ?, ?, ?, ?)';
   db.query(sql, [name, type, description, stock, image, price, rarity], (err, result) => {
-    if (err) return res.status(500).json({ error: 'Server error' });
+  if (err) {
+      console.error('GAGAL INSERT LIGHT CONE:', err.message); // <--- Tambahkan baris ini
+      return res.status(500).json({ error: 'Server error' });
+    }
     res.json({ message: 'Light Cone created', id: result.insertId });
   });
 });
@@ -130,9 +133,6 @@ app.delete('/galactic-resources/:id', verifyToken, (req, res) => {
   });
 });
 
-app.listen(PORT,() => {
-  console.log(`Astral Express server running on port ${PORT}`);
-});
 
 //AUTH LOGIN
 app.post('/auth/login', (req, res) => {
@@ -165,6 +165,8 @@ app.post('/auth/login', (req, res) => {
   });
 });
 
+app.listen(PORT,() => {
+  console.log(`Astral Express server running on port ${PORT}`);
 
 // UNTUK SIGN UP
 
