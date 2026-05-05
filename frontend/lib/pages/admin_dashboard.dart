@@ -580,21 +580,27 @@ class _RecentLightConeCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   color: const Color(0xFF6B4FA0),
                 ),
-                child: item.imagePath != null && item.imagePath!.isNotEmpty
+               child: item.imagePath != null && item.imagePath!.isNotEmpty
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: Image.asset(
-                          item.imagePath!,
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => const Center(
-                            child: Icon(Icons.image_outlined,
-                                color: Colors.white54, size: 28),
-                          ),
-                        ),
+                        child: item.imagePath!.startsWith('http')
+                            ? Image.network(
+                                item.imagePath!,
+                                fit: BoxFit.cover,
+                                errorBuilder: (_, __, ___) => const Center(
+                                  child: Icon(Icons.image_outlined, color: Colors.white54, size: 28),
+                                ),
+                              )
+                            : Image.asset(
+                                item.imagePath!,
+                                fit: BoxFit.cover,
+                                errorBuilder: (_, __, ___) => const Center(
+                                  child: Icon(Icons.image_outlined, color: Colors.white54, size: 28),
+                                ),
+                              ),
                       )
                     : const Center(
-                        child: Icon(Icons.image_outlined,
-                            color: Colors.white54, size: 28),
+                        child: Icon(Icons.image_outlined, color: Colors.white54, size: 28),
                       ),
               ),
               // Badge kategori
@@ -697,18 +703,24 @@ class _RecentGalacticResourceCard extends StatelessWidget {
                 child: item.imagePath != null && item.imagePath!.isNotEmpty
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: Image.asset(
-                          item.imagePath!,
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => const Center(
-                            child: Icon(Icons.image_outlined,
-                                color: Colors.white54, size: 28),
-                          ),
-                        ),
+                        child: item.imagePath!.startsWith('http')
+                            ? Image.network(
+                                item.imagePath!,
+                                fit: BoxFit.cover,
+                                errorBuilder: (_, __, ___) => const Center(
+                                  child: Icon(Icons.image_outlined, color: Colors.white54, size: 28),
+                                ),
+                              )
+                            : Image.asset(
+                                item.imagePath!,
+                                fit: BoxFit.cover,
+                                errorBuilder: (_, __, ___) => const Center(
+                                  child: Icon(Icons.image_outlined, color: Colors.white54, size: 28),
+                                ),
+                              ),
                       )
                     : const Center(
-                        child: Icon(Icons.image_outlined,
-                            color: Colors.white54, size: 28),
+                        child: Icon(Icons.image_outlined, color: Colors.white54, size: 28),
                       ),
               ),
               // Badge kategori
@@ -749,7 +761,7 @@ class _RecentGalacticResourceCard extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF7B5EA7).withValues(alpha: 0.5),
+                    color:  const Color(0xFF49369E).withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
@@ -897,10 +909,10 @@ class _ActionButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
-          color: const Color(0xFF7B5EA7).withValues(alpha: 0.5),
+          color: const Color(0xFF49369E),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-              color: const Color(0xFF9B7EC8).withValues(alpha: 0.6), width: 1),
+              color:  const Color(0xFF49369E), width: 1),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

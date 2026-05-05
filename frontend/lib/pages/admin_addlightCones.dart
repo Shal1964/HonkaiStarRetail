@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../session.dart';
 
-// ============================================================
 // ADMIN ADD LIGHT CONES PAGE
-// ============================================================
 class AdminAddLightCones extends StatefulWidget {
   const AdminAddLightCones({super.key});
 
@@ -58,6 +56,7 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
   Future<void> _saveItem() async {
     final name        = _nameController.text.trim();
     final subType     = _lightConeTypeController.text.trim();
+
     final description = _descriptionController.text.trim();
     final stock       = int.tryParse(_stockController.text.trim());
     final price       = double.tryParse(_priceController.text.trim());
@@ -84,7 +83,8 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
         },
         body: jsonEncode({
             'name':        name,
-            'type':        'Light Cones', // <-- UBAH JADI HARDCODE STRING INI
+            'type':        'Light Cones', 
+            'rarity':      _selectedStar.toInt(),
             'description': subType.isNotEmpty
                 ? '$subType${description.isNotEmpty ? ' — $description' : ''}'
                 : description,
@@ -172,7 +172,7 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
 
 
 
-  // ── Section divider ──────────────────────────────────────────────────────
+  // Section divider
   Widget _buildSectionDivider(String title) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -197,7 +197,7 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
     );
   }
 
-  // ── Bintang rarity interaktif ────────────────────────────────────────────
+  // Bintang rarity interaktif
   Widget _buildStarPicker() {
     return Row(
       children: List.generate(5, (i) {
@@ -234,9 +234,7 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
       ),
       body: Stack(
         children: [
-          // ── Background Image ────────────────────────────────────────────
-          // Pastikan 'assets/images/galaxy_bg.png' sudah didaftarkan
-          // di pubspec.yaml bagian flutter → assets
+          // Background Image 
           Positioned.fill(
             child: Image.asset(
               'assets/images/galaxy_bg.png',
@@ -257,7 +255,7 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
             ),
           ),
 
-          // ── Konten ─────────────────────────────────────────────────────
+          // Konten
           SafeArea(
             child: FadeTransition(
               opacity: _fadeAnim,
@@ -267,7 +265,7 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
 
-                    // ── Header ───────────────────────────────────────────
+                    // Header
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -290,12 +288,12 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
                       ),
                     ),
 
-                    // ── Items Name ───────────────────────────────────────
+                    // Items Name 
                     _buildLabel('Items Name'),
                     _buildTextField(_nameController, 'Enter item name...'),
                     const SizedBox(height: 20),
 
-                    // ── Item Type toggle ─────────────────────────────────
+                    // Item Type toggle
                     _buildLabel('Item Type'),
                     Container(
                       width: double.infinity,
@@ -318,7 +316,7 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
                     ),
                     const SizedBox(height: 20),
 
-                    // ── Light Cones Type ─────────────────────────────────
+                    // Light Cones Type 
                     _buildLabel('Light Cones Type'),
                     _buildTextField(
                       _lightConeTypeController, // controller TERPISAH
@@ -326,22 +324,22 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
                     ),
                     const SizedBox(height: 20),
 
-                    // ── Star / Rarity ────────────────────────────────────
+                    // Star / Rarity 
                     _buildLabel('Star / Rarity'),
                     _buildStarPicker(),
                     const SizedBox(height: 20),
 
-                    // ── Stock ────────────────────────────────────────────
+                    // Stock
                     _buildLabel('Stock'),
                     _buildTextField(_stockController, 'e.g. 10', isNumber: true),
                     const SizedBox(height: 20),
 
-                    // ── Price ────────────────────────────────────────────
+                    // Price
                     _buildLabel('Price'),
                     _buildTextField(_priceController, 'e.g. 15000', isNumber: true),
                     const SizedBox(height: 20),
 
-                    // ── Description ──────────────────────────────────────
+                    // Description
                     _buildLabel('Description'),
                     _buildTextField(
                       _descriptionController,
@@ -350,6 +348,10 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
                     ),
                     const SizedBox(height: 20),
 
+                     // Image URL
+                    _buildLabel('Image URL (Opsional)'),
+                    _buildTextField(_imageController, 'Paste image link here (https://...)'),
+                    const SizedBox(height: 20),
               
                     
                     
