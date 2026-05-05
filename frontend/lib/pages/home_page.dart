@@ -1564,11 +1564,24 @@ class _LightConeCard extends StatelessWidget {
     final bool isGalactic = item.kind == _ItemKind.galacticResource;
 
     return GestureDetector(
+      // onTap: () async {
+      //   await Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (_) => DetailPage(itemId: item.id)),
+      //   );
+      // },
       onTap: () async {
         await Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (_) => DetailPage(itemId: item.id)),
+            builder: (_) => DetailPage(
+              itemId: item.id,
+              itemType: item.kind == _ItemKind.galacticResource
+                  ? 'galactic'
+                  : 'lightcone',
+            ),
+          ),
         );
       },
       child: Container(
