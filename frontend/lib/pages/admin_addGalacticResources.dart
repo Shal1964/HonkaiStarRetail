@@ -346,6 +346,11 @@ class _AdminAddGalacticResourcesState extends State<AdminAddGalacticResources>
                     ),
                     const SizedBox(height: 20),
 
+                    // ── Image URL ────────────────────────────────────────────
+                    _buildLabel('Image URL (Opsional)'),
+                    _buildTextField(_imageController, 'Paste image link here (https://...)'),
+                    const SizedBox(height: 20),
+
                     // ── Tombol Save ──────────────────────────────────────
                     SizedBox(
                       width: double.infinity,

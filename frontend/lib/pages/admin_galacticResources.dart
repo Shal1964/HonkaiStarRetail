@@ -154,14 +154,27 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
                   width: 1,
                 ),
               ),
-              child: item.imagePath != null
+              child: item.imagePath != null && item.imagePath!.isNotEmpty
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(9),
-                      child: Image.asset(item.imagePath!, fit: BoxFit.cover),
+                      child: item.imagePath!.startsWith('http')
+                          ? Image.network(
+                              item.imagePath!,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) => const Center(
+                                child: Icon(Icons.image_not_supported_outlined, color: Colors.white30, size: 28),
+                              ),
+                            )
+                          : Image.asset(
+                              item.imagePath!,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) => const Center(
+                                child: Icon(Icons.image_not_supported_outlined, color: Colors.white30, size: 28),
+                              ),
+                            ),
                     )
                   : const Center(
-                      child: Icon(Icons.image_not_supported_outlined,
-                          color: Colors.white30, size: 28),
+                      child: Icon(Icons.image_not_supported_outlined, color: Colors.white30, size: 28),
                     ),
             ),
             const SizedBox(width: 12),
