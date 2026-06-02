@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../provider/item_provider.dart'; 
 import 'admin_addGalacticResources.dart';
+import 'package:provider/provider.dart';
+import '../provider/theme_provider.dart';
 
 class AdminGalacticResources extends StatefulWidget {
   const AdminGalacticResources({super.key});
@@ -50,7 +52,8 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF7B4FD4),
+              backgroundColor: context.watch<ThemeProvider>().actionButtonColor,
+              //backgroundColor: const Color(0xFF7B4FD4),
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8)),
@@ -102,7 +105,8 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF49369E),
+              backgroundColor: context.watch<ThemeProvider>().actionButtonColor,
+              //backgroundColor: const Color(0xFF49369E),
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8)),
@@ -128,11 +132,13 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
 
   // ── Card Item ─────────────────────────────────────────────────────────────
   Widget _buildGalacticResourceCard(GalacticResourceModel item) {
+     final themeProvider = context.watch<ThemeProvider>();
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        color: const Color(0xFF918EA1).withValues(alpha: 0.37),
+        color: themeProvider.boxColor.withValues(alpha: 0.20),
+        //color: const Color(0xFF918EA1).withValues(alpha: 0.37),
         border: Border.all(
           color: Colors.white.withValues(alpha: 0.20),
           width: 1,
@@ -148,7 +154,8 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
               height: 80,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: const Color(0xFF918EA1),
+                color : themeProvider.boxColor.withValues(alpha: 0.20),
+                //color: const Color(0xFF918EA1),
                 border: Border.all(
                   color: Colors.white.withValues(alpha: 0.20),
                   width: 1,
@@ -200,14 +207,14 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
                       _buildSmallButton(
                         label: 'Edit',
                         icon: Icons.edit_outlined,
-                        color: const Color(0xFF49369E),
+                        color: themeProvider.actionButtonColor,//const Color(0xFF49369E),
                         onPressed: () => _showEditDialog(item),
                       ),
                       const SizedBox(width: 8),
                       _buildSmallButton(
                         label: 'Delete',
                         icon: Icons.delete_outline,
-                        color: const Color(0xFF49369E),
+                        color: themeProvider.actionButtonColor,//const Color(0xFF49369E),
                         onPressed: () => _confirmDelete(item),
                       ),
                     ],
@@ -269,6 +276,8 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
   // ── Build ──────────────────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
+
+    final themeProvider = context.watch<ThemeProvider>();
     return Scaffold(
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
@@ -286,10 +295,20 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
           // ── Background image ───────────────────────────────────────────
           Positioned.fill(
             child: Image.asset(
-              'assets/images/galaxy_bg.png',
+              context.watch<ThemeProvider>().backgroundImage,
               fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => Image.asset(
+                'assets/images/galaxy_bg.png',
+                fit: BoxFit.cover,
+              ),
             ),
           ),
+          // Positioned.fill(
+          //   child: Image.asset(
+          //     'assets/images/galaxy_bg.png',
+          //     fit: BoxFit.cover,
+          //   ),
+          // ),
 
           SafeArea(
             child: Column(
@@ -302,7 +321,8 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(14),
-                      color: const Color(0xFF918EA1).withValues(alpha: 0.37),
+                      color: themeProvider.boxColor.withValues(alpha: 0.20),
+                      //color: const Color(0xFF918EA1).withValues(alpha: 0.37),
                       border: Border.all(
                         color: Colors.white.withValues(alpha: 0.37),
                       ),
@@ -371,7 +391,8 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
                       onPressed: _goToAddItems,
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
-                            const Color(0xFF918EA1).withValues(alpha: 0.37),
+                              themeProvider.boxColor.withValues(alpha: 0.20),
+                            //const Color(0xFF918EA1).withValues(alpha: 0.37),
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
@@ -418,13 +439,15 @@ class _AddGalacticResourcePageState extends State<AddGalacticResourcePage> {
   double _selectedRating = 5.0;
 
   Widget _buildTextField(TextEditingController ctrl, String hint, {bool isNumber = false}) {
+    final themeProvider = context.watch<ThemeProvider>();
     return TextField(
       controller: ctrl,
       style: const TextStyle(color: Colors.white),
       keyboardType: isNumber ? TextInputType.number : TextInputType.text,
       decoration: InputDecoration(
         filled: true,
-        fillColor: const Color(0xFF918EA1).withValues(alpha: 0.25),
+        fillColor: themeProvider.boxColor.withValues(alpha: 0.20),
+        //fillColor: const Color(0xFF918EA1).withValues(alpha: 0.25),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.20)),
@@ -445,6 +468,7 @@ class _AddGalacticResourcePageState extends State<AddGalacticResourcePage> {
 
   @override
   Widget build(BuildContext context) {
+     final themeProvider = context.watch<ThemeProvider>();
     return Scaffold(
       backgroundColor: const Color(0xFF1A1333), // Warna background tema gelap
       appBar: AppBar(
@@ -524,7 +548,8 @@ class _AddGalacticResourcePageState extends State<AddGalacticResourcePage> {
                   Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF7B4FD4),
+                  backgroundColor: context.watch<ThemeProvider>().actionButtonColor,
+                  //backgroundColor: const Color(0xFF7B4FD4),
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),

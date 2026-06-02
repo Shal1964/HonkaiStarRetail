@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../session.dart';
+import 'package:provider/provider.dart';
+import '../provider/theme_provider.dart';
 
 // ADMIN ADD LIGHT CONES PAGE
 class AdminAddLightCones extends StatefulWidget {
@@ -139,6 +141,7 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
     bool isNumber = false,
     bool isMultiline = false,
   }) {
+    final themeProvider = context.watch<ThemeProvider>();
     return TextField(
       controller: ctrl,
       style: const TextStyle(color: Colors.white, fontSize: 14),
@@ -150,7 +153,8 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
       maxLines: isMultiline ? 3 : 1,
       decoration: InputDecoration(
         filled: true,
-        fillColor: const Color(0xFF918EA1).withValues(alpha: 0.20),
+        fillColor: themeProvider.boxColor.withValues(alpha: 0.20),
+        //fillColor: const Color(0xFF918EA1).withValues(alpha: 0.20),
         hintText: hint,
         hintStyle: TextStyle(
             color: Colors.white.withValues(alpha: 0.25), fontSize: 13),
@@ -221,6 +225,7 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
   // ── BUILD ────────────────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeProvider>();
     return Scaffold(
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
@@ -237,7 +242,7 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
           // Background Image 
           Positioned.fill(
             child: Image.asset(
-              'assets/images/galaxy_bg.png',
+              themeProvider.backgroundImage,
               fit: BoxFit.cover,
               errorBuilder: (_, __, ___) => Container(
                 decoration: const BoxDecoration(
@@ -254,6 +259,25 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
               ),
             ),
           ),
+          // Positioned.fill(
+          //   child: Image.asset(
+          //     'assets/images/galaxy_bg.png',
+          //     fit: BoxFit.cover,
+          //     errorBuilder: (_, __, ___) => Container(
+          //       decoration: const BoxDecoration(
+          //         gradient: LinearGradient(
+          //           begin: Alignment.topCenter,
+          //           end: Alignment.bottomCenter,
+          //           colors: [
+          //             Color(0xFF1A1333),
+          //             Color(0xFF2D1B69),
+          //             Color(0xFF0D0820),
+          //           ],
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
 
           // Konten
           SafeArea(
@@ -271,7 +295,8 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       margin: const EdgeInsets.only(bottom: 28),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF918EA1).withValues(alpha: 0.37),
+                        color: themeProvider.boxColor.withValues(alpha: 0.20),
+                        //color: const Color(0xFF918EA1).withValues(alpha: 0.37),
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
                             color: Colors.white.withValues(alpha: 0.37)),
@@ -364,10 +389,12 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
                         onPressed: _isLoading ? null : _saveItem,
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
-                              const Color(0xFF918EA1).withValues(alpha: 0.37),
+                              //const Color(0xFF918EA1).withValues(alpha: 0.37),
+                              themeProvider.boxColor.withValues(alpha: 0.20),
                           foregroundColor: Colors.white,
                           disabledBackgroundColor:
-                              const Color(0xFF918EA1).withValues(alpha: 0.15),
+                                themeProvider.boxColor.withValues(alpha: 0.20),
+                              //const Color(0xFF918EA1).withValues(alpha: 0.15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                             side: BorderSide(
