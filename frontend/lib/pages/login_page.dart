@@ -320,10 +320,12 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                           keyboardType:
                                               TextInputType.emailAddress,
                                           validator: (v) {
-                                            if (v == null || v.isEmpty)
+                                            if (v == null || v.isEmpty) {
                                               return 'Email wajib diisi';
-                                            if (!v.contains('@'))
+                                            }
+                                            if (!v.contains('@')) {
                                               return 'Format email tidak valid';
+                                            }
                                             return null;
                                           },
                                         ),
@@ -367,8 +369,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                                     !_obscurePassword),
                                           ),
                                           validator: (v) {
-                                            if (v == null || v.isEmpty)
+                                            if (v == null || v.isEmpty) {
                                               return 'Password wajib diisi';
+                                            }
                                             return null;
                                           },
                                         ),
@@ -479,18 +482,6 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                         onTap: _isLoading
                                             ? () {}
                                             : _googleLogin,
-                                      ),
-                                      const SizedBox(width: 30),
-                                      _SocialBtn(
-                                        label: 'assets/images/facebook.png',
-                                        color: Colors.transparent,
-                                        onTap: () {},
-                                      ),
-                                      const SizedBox(width: 30),
-                                      _SocialBtn(
-                                        label: 'assets/images/twitter.png',
-                                        color: Colors.transparent,
-                                        onTap: () {},
                                       ),
                                     ],
                                   ),

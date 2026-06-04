@@ -85,7 +85,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String _selectedType = 'All';
-  int    _navIndex     = 0;
 
   @override
   void initState() {
@@ -168,7 +167,6 @@ class _HomePageState extends State<HomePage> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
 
     return Scaffold(
-      extendBody: true,
       backgroundColor: Colors.transparent,
       body: Stack(
         children: [
@@ -310,10 +308,6 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
 
-      bottomNavigationBar: _BottomNav(
-        currentIndex: _navIndex,
-        onTap: (i) => setState(() => _navIndex = i),
-      ),
     );
   }
 }
@@ -860,55 +854,3 @@ class _LightConeCard extends StatelessWidget {
 
 
 
-class _BottomNav extends StatelessWidget {
-  final int currentIndex;
-  final ValueChanged<int> onTap;
-  const _BottomNav({required this.currentIndex, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    const items = [
-      (Icons.home_outlined,          Icons.home_rounded),
-      (Icons.search_outlined,        Icons.search_rounded),
-      (Icons.shopping_cart_outlined, Icons.shopping_cart_rounded),
-      (Icons.person_outline,         Icons.person_rounded),
-    ];
-
-    return Container(
-      height: 47,
-      decoration: BoxDecoration(
-        color: context.watch<ThemeProvider>().boxColor.withOpacity(0.37),
-       // color: Color(0XFF918EA1).withOpacity(0.37),
-        border: Border(
-          top: BorderSide(
-              color: Colors.white.withOpacity(0.08), width: 0.8),
-        ),
-      ),
-      child: SafeArea(
-        top: false,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: List.generate(items.length, (i) {
-            final isActive = i == currentIndex;
-            return GestureDetector(
-              onTap: () => onTap(i),
-              behavior: HitTestBehavior.opaque,
-              child: SizedBox(
-                width: 64,
-                child: Center(
-                  child: Icon(
-                    isActive ? items[i].$2 : items[i].$1,
-                    color: isActive
-                        ? Colors.white
-                        : Colors.white.withOpacity(0.38),
-                    size: 32,
-                  ),
-                ),
-              ),
-            );
-          }),
-        ),
-      ),
-    );
-  }
-}
