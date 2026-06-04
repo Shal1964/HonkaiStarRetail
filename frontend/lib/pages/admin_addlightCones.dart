@@ -5,7 +5,6 @@ import '../session.dart';
 import 'package:provider/provider.dart';
 import '../provider/theme_provider.dart';
 
-// ADMIN ADD LIGHT CONES PAGE
 class AdminAddLightCones extends StatefulWidget {
   const AdminAddLightCones({super.key});
 
@@ -16,7 +15,6 @@ class AdminAddLightCones extends StatefulWidget {
 class _AdminAddLightConesState extends State<AdminAddLightCones>
     with SingleTickerProviderStateMixin {
 
-  // ── Controllers — masing-masing field punya controller sendiri ───────────
   final _nameController            = TextEditingController();
   final _lightConeTypeController   = TextEditingController(); // sub-type
   final _descriptionController     = TextEditingController();
@@ -24,7 +22,6 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
   final _priceController           = TextEditingController();
   final _imageController           = TextEditingController();
 
-  // ── State 
   double _selectedStar = 5.0;
   bool   _isLoading    = false;
 
@@ -54,7 +51,6 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
     super.dispose();
   }
 
-  // ── Kirim data ke Node.js → MySQL 
   Future<void> _saveItem() async {
     final name        = _nameController.text.trim();
     final subType     = _lightConeTypeController.text.trim();
@@ -122,8 +118,6 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
     );
   }
 
-  // ── UI Helpers ───────────────────────────────────────────────────────────
-
   Widget _buildLabel(String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
@@ -154,7 +148,6 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
       decoration: InputDecoration(
         filled: true,
         fillColor: themeProvider.boxColor.withValues(alpha: 0.20),
-        //fillColor: const Color(0xFF918EA1).withValues(alpha: 0.20),
         hintText: hint,
         hintStyle: TextStyle(
             color: Colors.white.withValues(alpha: 0.25), fontSize: 13),
@@ -174,9 +167,6 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
     );
   }
 
-
-
-  // Section divider
   Widget _buildSectionDivider(String title) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -201,7 +191,6 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
     );
   }
 
-  // Bintang rarity interaktif
   Widget _buildStarPicker() {
     return Row(
       children: List.generate(5, (i) {
@@ -222,7 +211,6 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
     );
   }
 
-  // ── BUILD ────────────────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
@@ -259,25 +247,6 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
               ),
             ),
           ),
-          // Positioned.fill(
-          //   child: Image.asset(
-          //     'assets/images/galaxy_bg.png',
-          //     fit: BoxFit.cover,
-          //     errorBuilder: (_, __, ___) => Container(
-          //       decoration: const BoxDecoration(
-          //         gradient: LinearGradient(
-          //           begin: Alignment.topCenter,
-          //           end: Alignment.bottomCenter,
-          //           colors: [
-          //             Color(0xFF1A1333),
-          //             Color(0xFF2D1B69),
-          //             Color(0xFF0D0820),
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
 
           // Konten
           SafeArea(
@@ -288,15 +257,12 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
-                    // Header
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       margin: const EdgeInsets.only(bottom: 28),
                       decoration: BoxDecoration(
                         color: themeProvider.boxColor.withValues(alpha: 0.20),
-                        //color: const Color(0xFF918EA1).withValues(alpha: 0.37),
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
                             color: Colors.white.withValues(alpha: 0.37)),
@@ -313,12 +279,10 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
                       ),
                     ),
 
-                    // Items Name 
                     _buildLabel('Items Name'),
                     _buildTextField(_nameController, 'Enter item name...'),
                     const SizedBox(height: 20),
 
-                    // Item Type toggle
                     _buildLabel('Item Type'),
                     Container(
                       width: double.infinity,
@@ -332,7 +296,7 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
                         ),
                       ),
                       child: const Text(
-                        'Light Cones', // Teks otomatis yang ditampilkan
+                        'Light Cones',
                         style: TextStyle(
                           color: Colors.white54, 
                           fontSize: 14,
@@ -340,31 +304,24 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
                       ),
                     ),
                     const SizedBox(height: 20),
-
-                    // Light Cones Type 
                     _buildLabel('Light Cones Type'),
                     _buildTextField(
                       _lightConeTypeController, // controller TERPISAH
                       'e.g. The Hunt, Erudition, Harmony...',
                     ),
                     const SizedBox(height: 20),
-
-                    // Star / Rarity 
                     _buildLabel('Star / Rarity'),
                     _buildStarPicker(),
-                    const SizedBox(height: 20),
 
-                    // Stock
+                    const SizedBox(height: 20),
                     _buildLabel('Stock'),
                     _buildTextField(_stockController, 'e.g. 10', isNumber: true),
-                    const SizedBox(height: 20),
 
-                    // Price
+                    const SizedBox(height: 20),
                     _buildLabel('Price'),
                     _buildTextField(_priceController, 'e.g. 15000', isNumber: true),
-                    const SizedBox(height: 20),
 
-                    // Description
+                    const SizedBox(height: 20),
                     _buildLabel('Description'),
                     _buildTextField(
                       _descriptionController,
@@ -372,16 +329,10 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
                       isMultiline: true,
                     ),
                     const SizedBox(height: 20),
-
-                     // Image URL
                     _buildLabel('Image URL (Opsional)'),
                     _buildTextField(_imageController, 'Paste image link here (https://...)'),
+                    
                     const SizedBox(height: 20),
-              
-                    
-                    
-
-                    // ── Tombol Save ──────────────────────────────────────
                     SizedBox(
                       width: double.infinity,
                       height: 52,

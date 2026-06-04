@@ -8,7 +8,6 @@ import '../provider/theme_provider.dart';
 
 class AdminDashboard extends StatelessWidget {
   const AdminDashboard({super.key});
-
   static const Color _boxColor = Color(0xFF918EA1);
   static const double _boxOpacity = 0.37;
 
@@ -19,8 +18,6 @@ class AdminDashboard extends StatelessWidget {
     (route) => false,
   );
 }
-
-  // ── Navigasi ke lightcones page ───────────────────────────────────────────
   void _goToLightCones(BuildContext context) {
     Navigator.push(
       context,
@@ -30,7 +27,6 @@ class AdminDashboard extends StatelessWidget {
     });
   }
 
-  // ── Navigasi ke galactic resources page ──────────────────────────────────
   void _goToGalacticResources(BuildContext context) {
     Navigator.push(
       context,
@@ -40,7 +36,6 @@ class AdminDashboard extends StatelessWidget {
     });
   }
 
-  // EDIT DIALOG — Light Cone 
   void _showEditLightCone(BuildContext context, LightConeModel item) {
     final TextEditingController controller = TextEditingController(text: item.stock.toString());
 
@@ -106,10 +101,6 @@ class AdminDashboard extends StatelessWidget {
     );
   }
 
-
-  // ════════════════════════════════════════════════════════════════════════════
-  // EDIT DIALOG — Galactic Resource (Sama persis dengan admin_galacticResources)
-  // ════════════════════════════════════════════════════════════════════════════
   void _showEditGalacticResource(BuildContext context, GalacticResourceModel item) {
     final TextEditingController controller = TextEditingController(text: item.stock.toString());
 
@@ -154,7 +145,6 @@ class AdminDashboard extends StatelessWidget {
             onPressed: () async {
               final newStock = int.tryParse(controller.text);
               if (newStock != null) {
-                // Update ke Database Backend secara permanen
                 final success = await context.read<ItemProvider>().editGalacticResource(
                   item.id, 
                   stock: newStock
@@ -175,9 +165,6 @@ class AdminDashboard extends StatelessWidget {
     );
   }
 
-  // ════════════════════════════════════════════════════════════════════════════
-  // DELETE DIALOG — Light Cone
-  // ════════════════════════════════════════════════════════════════════════════
   void _showDeleteLightCone(BuildContext context, LightConeModel item) {
     final provider = context.read<ItemProvider>();
     showDialog(
@@ -215,9 +202,6 @@ class AdminDashboard extends StatelessWidget {
     );
   }
 
-  // ════════════════════════════════════════════════════════════════════════════
-  // DELETE DIALOG — Galactic Resource
-  // ════════════════════════════════════════════════════════════════════════════
   void _showDeleteGalacticResource(BuildContext context, GalacticResourceModel item) {
     final provider = context.read<ItemProvider>();
     showDialog(
@@ -241,7 +225,6 @@ class AdminDashboard extends StatelessWidget {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: ctx.watch<ThemeProvider>().actionButtonColor,
-              //backgroundColor: const Color(0xFFB57BFF),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
             onPressed: () async {
@@ -255,12 +238,10 @@ class AdminDashboard extends StatelessWidget {
     );
   }
 
-  // ── BUILD ─────────────────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
     return Consumer<ItemProvider>(
       builder: (context, provider, _) {
-        // Muat data pertama kali jika kedua list masih kosong dan tidak loading
         if (provider.lightCones.isEmpty &&
             provider.galacticResources.isEmpty &&
             !provider.isLoading) {
@@ -269,8 +250,6 @@ class AdminDashboard extends StatelessWidget {
           });
         }
 
-        // Gabungkan 5 terbaru dari masing-masing kategori untuk ditampilkan
-        // di section RECENTS — diurutkan berdasarkan id terbesar
         final recentLC = provider.recentLightCones;
         final recentGR = provider.recentGalacticResources;
 
@@ -287,50 +266,10 @@ class AdminDashboard extends StatelessWidget {
                   ),
                 ),
               ),
-              // Positioned.fill(
-              //   child: Image.asset(
-              //     'assets/images/galaxy_bg.png',
-              //     fit: BoxFit.cover,
-              //     errorBuilder: (_, __, ___) => Container(
-              //       decoration: const BoxDecoration(
-              //         gradient: LinearGradient(
-              //           begin: Alignment.topCenter,
-              //           end: Alignment.bottomCenter,
-              //           colors: [
-              //             Color(0xFF1A1333),
-              //             Color(0xFF2D1B69),
-              //             Color(0xFF0D0820),
-              //           ],
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // Positioned.fill(
-              //   child: Image.asset(
-              //     'assets/images/galaxy_bg.png',
-              //     fit: BoxFit.cover,
-              //     errorBuilder: (_, __, ___) => Container(
-              //       decoration: const BoxDecoration(
-              //         gradient: LinearGradient(
-              //           begin: Alignment.topCenter,
-              //           end: Alignment.bottomCenter,
-              //           colors: [
-              //             Color(0xFF1A1333),
-              //             Color(0xFF2D1B69),
-              //             Color(0xFF0D0820),
-              //           ],
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-
+              
               SafeArea(
                 child: Column(
                   children: [
-                    // --- Top Bar ---
-                    // --- Top Bar ---
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       child: Row(
@@ -373,10 +312,6 @@ class AdminDashboard extends StatelessWidget {
                               );
                             },
                           ),
-                          // IconButton(
-                          //   icon: const Icon(Icons.menu, color: Colors.white),
-                          //   onPressed: () {},
-                          // ),
 
                           IconButton(
                             icon: const Icon(Icons.logout, color: Colors.white),
@@ -391,8 +326,6 @@ class AdminDashboard extends StatelessWidget {
                         ],
                       ),
                     ),
-
-                    // --- Dashboard Title ---
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Container(
@@ -400,7 +333,6 @@ class AdminDashboard extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         decoration: BoxDecoration(
                           color: context.watch<ThemeProvider>().boxColor.withValues(alpha: _boxOpacity),
-                          //color: _boxColor.withValues(alpha: _boxOpacity),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
@@ -424,8 +356,6 @@ class AdminDashboard extends StatelessWidget {
                     ),
 
                     const SizedBox(height: 24),
-
-                    // --- Tombol Kategori ---
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Row(
@@ -460,14 +390,12 @@ class AdminDashboard extends StatelessWidget {
 
                     const SizedBox(height: 28),
 
-                    // --- Recents ---
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // ── Header Recents ──────────────────────────────
                             Row(
                               children: [
                                 const Text(
@@ -550,7 +478,6 @@ class AdminDashboard extends StatelessWidget {
                                             )
                                           : ListView(
                                               children: [
-                                                // ── Section: Light Cones ──
                                                 if (recentLC.isNotEmpty) ...[
                                                   _SectionLabel(
                                                     icon: Icons.style_outlined,
@@ -568,8 +495,6 @@ class AdminDashboard extends StatelessWidget {
                                                     ),
                                                   ),
                                                 ],
-
-                                                // ── Section: Galactic Resources ──
                                                 if (recentGR.isNotEmpty) ...[
                                                   _SectionLabel(
                                                     icon: Icons.inventory_2_outlined,
@@ -607,9 +532,6 @@ class AdminDashboard extends StatelessWidget {
   }
 }
 
-// ============================================================
-// WIDGET: Label section pemisah di Recents
-// ============================================================
 class _SectionLabel extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -635,10 +557,6 @@ class _SectionLabel extends StatelessWidget {
     );
   }
 }
-
-// ============================================================
-// WIDGET: Kartu Recent — Light Cone (tampilkan rarity bintang)
-// ============================================================
 class _RecentLightConeCard extends StatelessWidget {
   final LightConeModel item;
   final VoidCallback onEdit;
@@ -659,7 +577,6 @@ class _RecentLightConeCard extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: context.watch<ThemeProvider>().boxColor.withValues(alpha: _boxOpacity),
-        // color: _boxColor.withValues(alpha: _boxOpacity),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
       ),
@@ -675,13 +592,6 @@ class _RecentLightConeCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   color: context.watch<ThemeProvider>().thumbnailBoxColor,
                 ),
-              // Container(
-              //   width: 70,
-              //   height: 85,
-              //   decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.circular(10),
-              //     color: const Color(0xFF6B4FA0),
-              //   ),
                child: item.imagePath != null && item.imagePath!.isNotEmpty
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(10),
@@ -705,7 +615,6 @@ class _RecentLightConeCard extends StatelessWidget {
                         child: Icon(Icons.image_outlined, color: Colors.white54, size: 28),
                       ),
               ),
-              // Badge kategori
               Positioned(
                 top: 4,
                 left: 4,
@@ -763,10 +672,6 @@ class _RecentLightConeCard extends StatelessWidget {
     );
   }
 }
-
-// ============================================================
-// WIDGET: Kartu Recent — Galactic Resource (TANPA rarity)
-// ============================================================
 class _RecentGalacticResourceCard extends StatelessWidget {
   final GalacticResourceModel item;
   final VoidCallback onEdit;
@@ -787,7 +692,6 @@ class _RecentGalacticResourceCard extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: context.watch<ThemeProvider>().boxColor.withValues(alpha: _boxOpacity),
-        //color: _boxColor.withValues(alpha: _boxOpacity),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
       ),
@@ -802,7 +706,6 @@ class _RecentGalacticResourceCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: context.watch<ThemeProvider>().thumbnailBoxColor,
-                  //color: const Color(0xFF6B4FA0),
                 ),
                 child: item.imagePath != null && item.imagePath!.isNotEmpty
                     ? ClipRRect(
@@ -827,7 +730,6 @@ class _RecentGalacticResourceCard extends StatelessWidget {
                         child: Icon(Icons.image_outlined, color: Colors.white54, size: 28),
                       ),
               ),
-              // Badge kategori
               Positioned(
                 top: 4,
                 left: 4,
@@ -860,7 +762,6 @@ class _RecentGalacticResourceCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 6),
-                // Tipe resource sebagai badge pengganti bintang
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
@@ -896,10 +797,6 @@ class _RecentGalacticResourceCard extends StatelessWidget {
     );
   }
 }
-
-// ============================================================
-// WIDGET: Rarity Bintang — pakai int (3/4/5), bukan double
-// ============================================================
 class _RarityStars extends StatelessWidget {
   final int rarity;
   const _RarityStars({required this.rarity});
@@ -917,10 +814,6 @@ class _RarityStars extends StatelessWidget {
     );
   }
 }
-
-// ============================================================
-// WIDGET: Tombol Kategori — tidak berubah
-// ============================================================
 class _CategoryButton extends StatelessWidget {
   final VoidCallback onTap;
   final int count;
@@ -947,7 +840,6 @@ class _CategoryButton extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: context.watch<ThemeProvider>().boxColor.withValues(alpha: _boxOpacity),
-          //color: _boxColor.withValues(alpha: _boxOpacity),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
         ),
@@ -974,15 +866,6 @@ class _CategoryButton extends StatelessWidget {
                 ),
                 child: Text(
                   '$count',
-                // Container(
-                //   padding:
-                //       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                //   decoration: BoxDecoration(
-                //     color: const Color(0xFF7B5EA7),
-                //     borderRadius: BorderRadius.circular(20),
-                //   ),
-                  // child: Text(
-                  //   '$count',
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -1006,10 +889,6 @@ class _CategoryButton extends StatelessWidget {
     );
   }
 }
-
-// ============================================================
-// WIDGET: Tombol Aksi kecil — tidak berubah
-// ============================================================
 class _ActionButton extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -1030,8 +909,6 @@ class _ActionButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           border: Border.all( 
             color: context.watch<ThemeProvider>().actionButtonColor, width: 1,),
-          // border: Border.all(
-          //     color:  const Color(0xFF49369E), width: 1),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../provider/item_provider.dart'; 
 import 'admin_addlightCones.dart';
-import 'package:provider/provider.dart';
 import '../provider/theme_provider.dart';
-
 
 class AdminLightCones extends StatefulWidget {
   const AdminLightCones({super.key});
@@ -14,8 +12,6 @@ class AdminLightCones extends StatefulWidget {
 }
 
 class _AdminLightConesState extends State<AdminLightCones> {
-
-  // ── Edit Stock Dialog ──────────────────────────────────────────────────────
   void _showEditDialog(LightConeModel item) {
     final TextEditingController controller =
         TextEditingController(text: item.stock.toString());
@@ -54,21 +50,18 @@ class _AdminLightConesState extends State<AdminLightCones> {
          ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: ctx.watch<ThemeProvider>().actionButtonColor,
-              //backgroundColor: const Color(0xFF7B4FD4),
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8)),
             ),
-            // UBAH JADI ASYNC DI SINI
             onPressed: () async {
               final newStock = int.tryParse(controller.text);
               if (newStock != null) {
-                // Panggil provider untuk update ke Database Backend secara permanen!
                 final success = await context.read<ItemProvider>().editLightCone(
                   item.id, 
                   stock: newStock
                 );
-                
+
                 if (success && ctx.mounted) {
                   ScaffoldMessenger.of(ctx).showSnackBar(
                     const SnackBar(content: Text('Stock berhasil diupdate di database!')),
@@ -84,7 +77,6 @@ class _AdminLightConesState extends State<AdminLightCones> {
     );
   }
 
-  // ── Delete Dialog ──────────────────────────────────────────────────────────
   void _confirmDelete(LightConeModel item) {
     showDialog(
       context: context,
@@ -107,13 +99,11 @@ class _AdminLightConesState extends State<AdminLightCones> {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: ctx.watch<ThemeProvider>().actionButtonColor,
-              //backgroundColor: const Color(0xFF49369E),
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8)),
             ),
             onPressed: () {
-              // Hapus item menggunakan provider berdasarkan id
               context.read<ItemProvider>().deleteLightCone(item.id);
               Navigator.of(ctx).pop();
             },
@@ -124,14 +114,12 @@ class _AdminLightConesState extends State<AdminLightCones> {
     );
   }
 
-  // ── Navigate to Add Items page ─────────────────────────────────────────────
   void _goToAddItems() {
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => const AdminAddLightCones()),
     );
   }
 
-  // ── Rarity Stars ──────────────────────────────────────────────────────────
   Widget _buildStars(int count) {
     return Row(
       children: List.generate(
@@ -141,7 +129,6 @@ class _AdminLightConesState extends State<AdminLightCones> {
     );
   }
 
-  // ── Card Item ─────────────────────────────────────────────────────────────
   Widget _buildLightConeCard(LightConeModel item) {
     final themeProvider = context.watch<ThemeProvider>();
     return Container(
@@ -149,7 +136,6 @@ class _AdminLightConesState extends State<AdminLightCones> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
         color: themeProvider.boxColor.withValues(alpha: 0.37),
-        //color: const Color(0xFF918EA1).withValues(alpha: 0.37),
         border: Border.all(
           color: Colors.white.withValues(alpha: 0.20),
           width: 1,
@@ -160,13 +146,11 @@ class _AdminLightConesState extends State<AdminLightCones> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Placeholder/Thumbnail image
             Container(
               width: 64,
               height: 80,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                //color: const Color(0xFF918EA1),
                 color: themeProvider.boxColor,
                 border: Border.all(
                   color: Colors.white.withValues(alpha: 0.20),
@@ -198,7 +182,6 @@ class _AdminLightConesState extends State<AdminLightCones> {
             ),
             const SizedBox(width: 12),
 
-            // Info
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -213,11 +196,9 @@ class _AdminLightConesState extends State<AdminLightCones> {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  // Rating dari LightConeModel
                   _buildStars(item.rarity), 
                   const SizedBox(height: 8),
 
-                  // Edit & Delete buttons
                   Row(
                     children: [
                       _buildSmallButton(
@@ -226,19 +207,8 @@ class _AdminLightConesState extends State<AdminLightCones> {
                         color: themeProvider.actionButtonColor,
                         onPressed: () => _showEditDialog(item),
                       ),
-                      // _buildSmallButton(
-                      //   label: 'Edit',
-                      //   icon: Icons.edit_outlined,
-                      //   color: const Color(0xFF49369E),
-                      //   onPressed: () => _showEditDialog(item),
-                      // ),
+        
                       const SizedBox(width: 8),
-                      // _buildSmallButton(
-                      //   label: 'Delete',
-                      //   icon: Icons.delete_outline,
-                      //   color: const Color(0xFF49369E),
-                      //   onPressed: () => _confirmDelete(item),
-                      // ),
                       _buildSmallButton(
                         label: 'Delete',
                         icon: Icons.delete_outline,
@@ -251,7 +221,6 @@ class _AdminLightConesState extends State<AdminLightCones> {
               ),
             ),
 
-            // Stock badge
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -301,7 +270,6 @@ class _AdminLightConesState extends State<AdminLightCones> {
     );
   }
 
-  // ── Build ──────────────────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
@@ -319,7 +287,6 @@ class _AdminLightConesState extends State<AdminLightCones> {
       ),
       body: Stack(
         children: [
-          // ── Background image ───────────────────────────────────────────
           Positioned.fill(
             child: Image.asset(
               context.watch<ThemeProvider>().backgroundImage,
@@ -330,26 +297,17 @@ class _AdminLightConesState extends State<AdminLightCones> {
               ),
             ),
           ),
-          // Positioned.fill(
-          //   child: Image.asset(
-          //     'assets/images/galaxy_bg.png',
-          //     fit: BoxFit.cover,
-          //   ),
-          // ),
 
           SafeArea(
             child: Column(
               children: [
                 const SizedBox(height: 8),
-
-                // ── Header ──────────────────────────────────────────────
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(14),
                       color: themeProvider.boxColor.withValues(alpha: 0.37),
-                      //color: const Color(0xFF918EA1).withValues(alpha: 0.37),
                       border: Border.all(
                         color: Colors.white.withValues(alpha: 0.37),
                       ),
@@ -382,11 +340,9 @@ class _AdminLightConesState extends State<AdminLightCones> {
                   ),
                 ),
 
-                // ── List (Menggunakan Consumer Provider) ─────────────────
                 Expanded(
                   child: Consumer<ItemProvider>(
                     builder: (context, provider, child) {
-                      // Mengambil khusus data kategori Light Cone
                       final items = provider.lightCones;
 
                       if (items.isEmpty) {
@@ -407,7 +363,6 @@ class _AdminLightConesState extends State<AdminLightCones> {
                   ),
                 ),
 
-                // ── Add Items Button ─────────────────────────────────────
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 8, 16, 20),
                   child: SizedBox(
@@ -418,7 +373,6 @@ class _AdminLightConesState extends State<AdminLightCones> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
                              themeProvider.boxColor.withValues(alpha: 0.37),
-                           // const Color(0xFF918EA1).withValues(alpha: 0.37),
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
@@ -447,11 +401,6 @@ class _AdminLightConesState extends State<AdminLightCones> {
     );
   }
 }
-
-
-// ============================================================================
-// HALAMAN KHUSUS TAMBAH ITEM
-// ============================================================================
 class AddLightConePage extends StatefulWidget {
   const AddLightConePage({super.key});
 
@@ -472,7 +421,6 @@ class _AddLightConePageState extends State<AddLightConePage> {
       keyboardType: isNumber ? TextInputType.number : TextInputType.text,
       decoration: InputDecoration(
         filled: true,
-        //fillColor: const Color(0xFF918EA1).withValues(alpha: 0.25),
         fillColor: themeProvider.boxColor.withValues(alpha: 0.25),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -507,20 +455,20 @@ class _AddLightConePageState extends State<AddLightConePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Input Nama
             const Text('Name', style: TextStyle(color: Colors.white70, fontSize: 14)),
+
             const SizedBox(height: 8),
             _buildTextField(_nameController, 'Light Cone Name...'),
-            const SizedBox(height: 24),
 
-            // Input Stock
+            const SizedBox(height: 24),
             const Text('Stock', style: TextStyle(color: Colors.white70, fontSize: 14)),
+
             const SizedBox(height: 8),
             _buildTextField(_stockController, 'Amount of stock...', isNumber: true),
-            const SizedBox(height: 24),
 
-            // Input Rating
+            const SizedBox(height: 24),
             const Text('Rating / Rarity', style: TextStyle(color: Colors.white70, fontSize: 14)),
+
             const SizedBox(height: 12),
             Row(
               children: List.generate(5, (i) {
@@ -542,8 +490,6 @@ class _AddLightConePageState extends State<AddLightConePage> {
               }),
             ),
             const SizedBox(height: 48),
-
-            // Tombol Save
             SizedBox(
               width: double.infinity,
               height: 50,
@@ -560,21 +506,10 @@ class _AddLightConePageState extends State<AddLightConePage> {
                   }
 
                   final provider = context.read<ItemProvider>();
-                  // Tambah ke provider
-                  // provider.addItem(LightConeModel(
-                  //   id: provider.generateId(),
-                  //   name: name,
-                  //   rating: _selectedRating,
-                  //   stock: stock,
-                  //   category: ItemCategory.lightCone, 
-                  // ));
-
-                  // Kembali ke halaman AdminLightCones
                   Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: context.watch<ThemeProvider>().actionButtonColor,
-                  //backgroundColor: const Color(0xFF7B4FD4),
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
