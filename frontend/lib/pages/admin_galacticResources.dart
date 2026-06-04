@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../provider/item_provider.dart'; 
 import 'admin_addGalacticResources.dart';
-import 'package:provider/provider.dart';
 import '../provider/theme_provider.dart';
 
 class AdminGalacticResources extends StatefulWidget {
@@ -13,8 +12,6 @@ class AdminGalacticResources extends StatefulWidget {
 }
 
 class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
-
-  // ── Edit Stock Dialog ──────────────────────────────────────────────────────
   void _showEditDialog(GalacticResourceModel item) {
     final TextEditingController controller =
         TextEditingController(text: item.stock.toString());
@@ -53,16 +50,13 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: context.watch<ThemeProvider>().actionButtonColor,
-              //backgroundColor: const Color(0xFF7B4FD4),
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8)),
             ),
-            // UBAH JADI ASYNC DI SINI
             onPressed: () async {
               final newStock = int.tryParse(controller.text);
               if (newStock != null) {
-                // Panggil provider untuk update ke Database Backend secara permanen!
                 final success = await context.read<ItemProvider>().editGalacticResource(
                   item.id, 
                   stock: newStock
@@ -83,7 +77,6 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
     );
   }
 
-  // ── Delete Dialog ──────────────────────────────────────────────────────────
   void _confirmDelete(GalacticResourceModel item) {
     showDialog(
       context: context,
@@ -106,13 +99,11 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: context.watch<ThemeProvider>().actionButtonColor,
-              //backgroundColor: const Color(0xFF49369E),
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8)),
             ),
             onPressed: () {
-              // Hapus item menggunakan provider berdasarkan id
               context.read<ItemProvider>().deleteGalacticResource(item.id);
               Navigator.of(ctx).pop();
             },
@@ -123,14 +114,12 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
     );
   }
 
-  // ── Navigate to Add Items page ─────────────────────────────────────────────
   void _goToAddItems() {
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => const AdminAddGalacticResources()),
     );
   }
 
-  // ── Card Item ─────────────────────────────────────────────────────────────
   Widget _buildGalacticResourceCard(GalacticResourceModel item) {
      final themeProvider = context.watch<ThemeProvider>();
     return Container(
@@ -138,7 +127,6 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
         color: themeProvider.boxColor.withValues(alpha: 0.20),
-        //color: const Color(0xFF918EA1).withValues(alpha: 0.37),
         border: Border.all(
           color: Colors.white.withValues(alpha: 0.20),
           width: 1,
@@ -155,7 +143,6 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color : themeProvider.boxColor.withValues(alpha: 0.20),
-                //color: const Color(0xFF918EA1),
                 border: Border.all(
                   color: Colors.white.withValues(alpha: 0.20),
                   width: 1,
@@ -186,7 +173,6 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
             ),
             const SizedBox(width: 12),
 
-            // Info
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -201,7 +187,7 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  // Edit & Delete buttons
+              
                   Row(
                     children: [
                       _buildSmallButton(
@@ -223,7 +209,6 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
               ),
             ),
 
-            // Stock badge
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -273,7 +258,6 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
     );
   }
 
-  // ── Build ──────────────────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
 
@@ -292,7 +276,6 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
       ),
       body: Stack(
         children: [
-          // ── Background image ───────────────────────────────────────────
           Positioned.fill(
             child: Image.asset(
               context.watch<ThemeProvider>().backgroundImage,
@@ -303,26 +286,18 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
               ),
             ),
           ),
-          // Positioned.fill(
-          //   child: Image.asset(
-          //     'assets/images/galaxy_bg.png',
-          //     fit: BoxFit.cover,
-          //   ),
-          // ),
 
           SafeArea(
             child: Column(
               children: [
                 const SizedBox(height: 8),
 
-                // ── Header ──────────────────────────────────────────────
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(14),
                       color: themeProvider.boxColor.withValues(alpha: 0.20),
-                      //color: const Color(0xFF918EA1).withValues(alpha: 0.37),
                       border: Border.all(
                         color: Colors.white.withValues(alpha: 0.37),
                       ),
@@ -335,7 +310,6 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
                         Container(
                           padding: const EdgeInsets.all(6),
                           child: Image.asset(
-                            // Pastikan icon ini ada di folder assets Anda
                             'assets/images/GalacticResourcesIcon.png',
                             width: 24,
                             height: 24,
@@ -348,7 +322,7 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            letterSpacing: 2, // Disesuaikan agar muat
+                            letterSpacing: 2,
                           ),
                         ),
                       ],
@@ -356,11 +330,9 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
                   ),
                 ),
 
-                // ── List (Menggunakan Consumer Provider) ─────────────────
                 Expanded(
                   child: Consumer<ItemProvider>(
                     builder: (context, provider, child) {
-                      // GANTI: Mengambil khusus data kategori Galactic Resources
                       final items = provider.galacticResources;
 
                       if (items.isEmpty) {
@@ -381,7 +353,6 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
                   ),
                 ),
 
-                // ── Add Items Button ─────────────────────────────────────
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 8, 16, 20),
                   child: SizedBox(
@@ -392,7 +363,6 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
                               themeProvider.boxColor.withValues(alpha: 0.20),
-                            //const Color(0xFF918EA1).withValues(alpha: 0.37),
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
@@ -421,11 +391,6 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
     );
   }
 }
-
-
-// ============================================================================
-// HALAMAN KHUSUS TAMBAH ITEM (GALACTIC RESOURCES)
-// ============================================================================
 class AddGalacticResourcePage extends StatefulWidget {
   const AddGalacticResourcePage({super.key});
 
@@ -447,7 +412,6 @@ class _AddGalacticResourcePageState extends State<AddGalacticResourcePage> {
       decoration: InputDecoration(
         filled: true,
         fillColor: themeProvider.boxColor.withValues(alpha: 0.20),
-        //fillColor: const Color(0xFF918EA1).withValues(alpha: 0.25),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.20)),
@@ -470,7 +434,7 @@ class _AddGalacticResourcePageState extends State<AddGalacticResourcePage> {
   Widget build(BuildContext context) {
      final themeProvider = context.watch<ThemeProvider>();
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1333), // Warna background tema gelap
+      backgroundColor: const Color(0xFF1A1333), 
       appBar: AppBar(
         title: const Text('Add Galactic Resource', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF1E1433),
@@ -482,19 +446,16 @@ class _AddGalacticResourcePageState extends State<AddGalacticResourcePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Input Nama
             const Text('Name', style: TextStyle(color: Colors.white70, fontSize: 14)),
             const SizedBox(height: 8),
             _buildTextField(_nameController, 'Galactic Resource Name...'),
             const SizedBox(height: 24),
 
-            // Input Stock
             const Text('Stock', style: TextStyle(color: Colors.white70, fontSize: 14)),
             const SizedBox(height: 8),
             _buildTextField(_stockController, 'Amount of stock...', isNumber: true),
             const SizedBox(height: 24),
 
-            // Input Rating
             const Text('Rating / Rarity', style: TextStyle(color: Colors.white70, fontSize: 14)),
             const SizedBox(height: 12),
             Row(
@@ -518,7 +479,6 @@ class _AddGalacticResourcePageState extends State<AddGalacticResourcePage> {
             ),
             const SizedBox(height: 48),
 
-            // Tombol Save
             SizedBox(
               width: double.infinity,
               height: 50,
@@ -535,21 +495,10 @@ class _AddGalacticResourcePageState extends State<AddGalacticResourcePage> {
                   }
 
                   final provider = context.read<ItemProvider>();
-                  // Tambah ke provider
-                  // provider.addItem(GalacticResourceModel(
-                  //   id: provider.generateId(),
-                  //   name: name,
-                  //   rating: _selectedRating,
-                  //   stock: stock,
-                  //   category: ItemCategory.galacticResource, // <-- Pastikan enum ini ada di GalacticResourceModel/Provider
-                  // ));
-
-                  // Kembali ke halaman AdminGalacticResources
                   Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: context.watch<ThemeProvider>().actionButtonColor,
-                  //backgroundColor: const Color(0xFF7B4FD4),
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),

@@ -5,9 +5,6 @@ import '../session.dart';
 import 'package:provider/provider.dart';
 import '../provider/theme_provider.dart';
 
-// ============================================================
-// ADMIN ADD GALACTIC RESOURCES PAGE
-// ============================================================
 class AdminAddGalacticResources extends StatefulWidget {
   const AdminAddGalacticResources({super.key});
 
@@ -18,7 +15,6 @@ class AdminAddGalacticResources extends StatefulWidget {
 class _AdminAddGalacticResourcesState extends State<AdminAddGalacticResources>
     with SingleTickerProviderStateMixin {
 
-  // ── Controllers — masing-masing field punya controller sendiri ───────────
   final _nameController            = TextEditingController();
   final _resourceTypeController    = TextEditingController(); // sub-type
   final _descriptionController     = TextEditingController();
@@ -26,7 +22,6 @@ class _AdminAddGalacticResourcesState extends State<AdminAddGalacticResources>
   final _priceController           = TextEditingController();
   final _imageController           = TextEditingController();
 
-  // ── State ───────────────────────────────────────────────────────────────
   double _selectedStar = 5.0;
   bool   _isLoading    = false;
 
@@ -55,8 +50,6 @@ class _AdminAddGalacticResourcesState extends State<AdminAddGalacticResources>
     _imageController.dispose();
     super.dispose();
   }
-
-  // ── Kirim data ke Node.js → MySQL ────────────────────────────────────────
   Future<void> _saveItem() async {
     final name        = _nameController.text.trim();
     final subType     = _resourceTypeController.text.trim();
@@ -122,8 +115,6 @@ class _AdminAddGalacticResourcesState extends State<AdminAddGalacticResources>
     );
   }
 
-  // ── UI Helpers ───────────────────────────────────────────────────────────
-
   Widget _buildLabel(String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
@@ -153,8 +144,6 @@ class _AdminAddGalacticResourcesState extends State<AdminAddGalacticResources>
       maxLines: isMultiline ? 3 : 1,
       decoration: InputDecoration(
         filled: true,
-        // fillColor: themeProvider.boxColor.withValues(alpha: 0.37),
-        //fillColor: const Color(0xFF918EA1).withValues(alpha: 0.20),
         fillColor: themeProvider.boxColor.withValues(alpha: 0.20),
         hintText: hint,
         hintStyle: TextStyle(
@@ -175,7 +164,6 @@ class _AdminAddGalacticResourcesState extends State<AdminAddGalacticResources>
     );
   }
 
-  // ── Section divider ──────────────────────────────────────────────────────
   Widget _buildSectionDivider(String title) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -200,7 +188,6 @@ class _AdminAddGalacticResourcesState extends State<AdminAddGalacticResources>
     );
   }
 
-  // ── Bintang rarity interaktif ────────────────────────────────────────────
   Widget _buildStarPicker() {
     return Row(
       children: List.generate(5, (i) {
@@ -221,7 +208,6 @@ class _AdminAddGalacticResourcesState extends State<AdminAddGalacticResources>
     );
   }
 
-  // ── BUILD ────────────────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
@@ -238,7 +224,6 @@ class _AdminAddGalacticResourcesState extends State<AdminAddGalacticResources>
       ),
       body: Stack(
         children: [
-          // ── Background Image ────────────────────────────────────────────
           Positioned.fill(
             child: Image.asset(
               themeProvider.backgroundImage,
@@ -258,27 +243,7 @@ class _AdminAddGalacticResourcesState extends State<AdminAddGalacticResources>
               ),
             ),
           ),
-          // Positioned.fill(
-          //   child: Image.asset(
-          //     'assets/images/galaxy_bg.png',
-          //     fit: BoxFit.cover,
-          //     errorBuilder: (_, __, ___) => Container(
-          //       decoration: const BoxDecoration(
-          //         gradient: LinearGradient(
-          //           begin: Alignment.topCenter,
-          //           end: Alignment.bottomCenter,
-          //           colors: [
-          //             Color(0xFF1A1333),
-          //             Color(0xFF2D1B69),
-          //             Color(0xFF0D0820),
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
-
-          // ── Konten ─────────────────────────────────────────────────────
+          
           SafeArea(
             child: FadeTransition(
               opacity: _fadeAnim,
@@ -287,15 +252,12 @@ class _AdminAddGalacticResourcesState extends State<AdminAddGalacticResources>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
-                    // ── Header ───────────────────────────────────────────
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       margin: const EdgeInsets.only(bottom: 28),
                       decoration: BoxDecoration(
                         color: themeProvider.boxColor.withValues(alpha: 0.20),
-                        //color: const Color(0xFF918EA1).withValues(alpha: 0.37),
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
                             color: Colors.white.withValues(alpha: 0.37)),
@@ -311,13 +273,9 @@ class _AdminAddGalacticResourcesState extends State<AdminAddGalacticResources>
                         ),
                       ),
                     ),
-
-                    // ── Items Name ───────────────────────────────────────
                     _buildLabel('Items Name'),
                     _buildTextField(_nameController, 'Enter item name...'),
                     const SizedBox(height: 20),
-
-                    // ── Item Type (Read-Only) ────────────────────────────
                     _buildLabel('Item Type'),
                     Container(
                       width: double.infinity,
@@ -331,53 +289,44 @@ class _AdminAddGalacticResourcesState extends State<AdminAddGalacticResources>
                         ),
                       ),
                       child: const Text(
-                        'Galactic Resources', // Teks otomatis untuk halaman ini
+                        'Galactic Resources', 
                         style: TextStyle(
-                          color: Colors.white, // Diubah menjadi putih sesuai request sebelumnya
+                          color: Colors.white, 
                           fontSize: 14,
                         ),
                       ),
                     ),
                     const SizedBox(height: 20),
-
-                    // ── Resource Type ────────────────────────────────────
                     _buildLabel('Resource Type'),
                     _buildTextField(
                       _resourceTypeController, 
                       'e.g. Ascension Material, Consumable...',
                     ),
                     const SizedBox(height: 20),
-
-                    // ── Star / Rarity ────────────────────────────────────
                     _buildLabel('Star / Rarity'),
                     _buildStarPicker(),
-                    const SizedBox(height: 20),
 
-                    // ── Stock ────────────────────────────────────────────
+                    const SizedBox(height: 20),
                     _buildLabel('Stock'),
                     _buildTextField(_stockController, 'e.g. 10', isNumber: true),
-                    const SizedBox(height: 20),
 
-                    // ── Price ────────────────────────────────────────────
+                    const SizedBox(height: 20),
                     _buildLabel('Price'),
                     _buildTextField(_priceController, 'e.g. 15000', isNumber: true),
-                    const SizedBox(height: 20),
 
-                    // ── Description ──────────────────────────────────────
+                    const SizedBox(height: 20),
                     _buildLabel('Description'),
                     _buildTextField(
                       _descriptionController,
                       'Enter description...',
                       isMultiline: true,
                     ),
-                    const SizedBox(height: 20),
 
-                    // ── Image URL ────────────────────────────────────────────
+                    const SizedBox(height: 20),
                     _buildLabel('Image URL (Opsional)'),
                     _buildTextField(_imageController, 'Paste image link here (https://...)'),
-                    const SizedBox(height: 20),
 
-                    // ── Tombol Save ──────────────────────────────────────
+                    const SizedBox(height: 20),
                     SizedBox(
                       width: double.infinity,
                       height: 52,
@@ -385,11 +334,9 @@ class _AdminAddGalacticResourcesState extends State<AdminAddGalacticResources>
                         onPressed: _isLoading ? null : _saveItem,
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
-                              // const Color(0xFF918EA1).withValues(alpha: 0.37),
                               themeProvider.boxColor.withValues(alpha: 0.20),
                           foregroundColor: Colors.white,
                           disabledBackgroundColor:
-                              //const Color(0xFF918EA1).withValues(alpha: 0.15),
                               themeProvider.boxColor.withValues(alpha: 0.20),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
