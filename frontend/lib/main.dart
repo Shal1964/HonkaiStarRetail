@@ -3,12 +3,14 @@ import 'pages/admin_dashboard.dart';
 import 'pages/login_page.dart';
 import 'package:provider/provider.dart';
 import 'provider/item_provider.dart';
+import 'provider/theme_provider.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ItemProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ],
       child: const MyApp(),
     )

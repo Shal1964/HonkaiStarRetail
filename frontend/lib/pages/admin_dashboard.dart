@@ -3,12 +3,22 @@ import 'package:honkai_star_retail/pages/admin_galacticResources.dart';
 import 'package:provider/provider.dart';
 import '../provider/item_provider.dart';
 import 'admin_lightCones.dart';
+import 'login_page.dart';
+import '../provider/theme_provider.dart';
 
 class AdminDashboard extends StatelessWidget {
   const AdminDashboard({super.key});
 
   static const Color _boxColor = Color(0xFF918EA1);
   static const double _boxOpacity = 0.37;
+
+  void _logout(BuildContext context) {
+  Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(builder: (_) => const LoginPage()),
+    (route) => false,
+  );
+}
 
   // ── Navigasi ke lightcones page ───────────────────────────────────────────
   void _goToLightCones(BuildContext context) {
@@ -67,7 +77,8 @@ class AdminDashboard extends StatelessWidget {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF7B4FD4),
+              backgroundColor: ctx.watch<ThemeProvider>().actionButtonColor,
+              //backgroundColor: const Color(0xFF7B4FD4),
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             ),
@@ -135,7 +146,8 @@ class AdminDashboard extends StatelessWidget {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF7B4FD4),
+              backgroundColor: ctx.watch<ThemeProvider>().actionButtonColor,
+              //backgroundColor: const Color(0xFF7B4FD4),
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             ),
@@ -188,7 +200,8 @@ class AdminDashboard extends StatelessWidget {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFB57BFF),
+              backgroundColor: ctx.watch<ThemeProvider>().actionButtonColor,
+              //backgroundColor: const Color(0xFFB57BFF),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
             onPressed: () async {
@@ -227,7 +240,8 @@ class AdminDashboard extends StatelessWidget {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFB57BFF),
+              backgroundColor: ctx.watch<ThemeProvider>().actionButtonColor,
+              //backgroundColor: const Color(0xFFB57BFF),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
             onPressed: () async {
@@ -265,35 +279,114 @@ class AdminDashboard extends StatelessWidget {
             children: [
               Positioned.fill(
                 child: Image.asset(
-                  'assets/images/galaxy_bg.png',
+                  context.watch<ThemeProvider>().backgroundImage,
                   fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color(0xFF1A1333),
-                          Color(0xFF2D1B69),
-                          Color(0xFF0D0820),
-                        ],
-                      ),
-                    ),
+                  errorBuilder: (_, __, ___) => Image.asset(
+                    'assets/images/galaxy_bg.png',
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
+              // Positioned.fill(
+              //   child: Image.asset(
+              //     'assets/images/galaxy_bg.png',
+              //     fit: BoxFit.cover,
+              //     errorBuilder: (_, __, ___) => Container(
+              //       decoration: const BoxDecoration(
+              //         gradient: LinearGradient(
+              //           begin: Alignment.topCenter,
+              //           end: Alignment.bottomCenter,
+              //           colors: [
+              //             Color(0xFF1A1333),
+              //             Color(0xFF2D1B69),
+              //             Color(0xFF0D0820),
+              //           ],
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // Positioned.fill(
+              //   child: Image.asset(
+              //     'assets/images/galaxy_bg.png',
+              //     fit: BoxFit.cover,
+              //     errorBuilder: (_, __, ___) => Container(
+              //       decoration: const BoxDecoration(
+              //         gradient: LinearGradient(
+              //           begin: Alignment.topCenter,
+              //           end: Alignment.bottomCenter,
+              //           colors: [
+              //             Color(0xFF1A1333),
+              //             Color(0xFF2D1B69),
+              //             Color(0xFF0D0820),
+              //           ],
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
 
               SafeArea(
                 child: Column(
                   children: [
                     // --- Top Bar ---
+                    // --- Top Bar ---
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          Consumer<ThemeProvider>(
+                            builder: (context, themeProvider, _) {
+                              return PopupMenuButton<String>(
+                                icon: const Icon(Icons.menu, color: Colors.white),
+                                color: const Color(0xFF1E1A3A),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                onSelected: (value) {
+                                  if (value == 'dark_mode') {
+                                    themeProvider.toggleTheme();
+                                  }
+                                },
+                                itemBuilder: (context) => [
+                                  PopupMenuItem(
+                                    value: 'dark_mode',
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          themeProvider.isDarkMode
+                                              ? Icons.light_mode
+                                              : Icons.dark_mode,
+                                          color: Colors.white,
+                                          size: 20,
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                          themeProvider.isDarkMode ? 'Light Mode' : 'Dark Mode',
+                                          style: const TextStyle(color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                          // IconButton(
+                          //   icon: const Icon(Icons.menu, color: Colors.white),
+                          //   onPressed: () {},
+                          // ),
+
                           IconButton(
-                            icon: const Icon(Icons.menu, color: Colors.white),
-                            onPressed: () {},
+                            icon: const Icon(Icons.logout, color: Colors.white),
+                            onPressed: () {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(builder: (_) => const LoginPage()),
+                                (route) => false,
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -306,7 +399,8 @@ class AdminDashboard extends StatelessWidget {
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         decoration: BoxDecoration(
-                          color: _boxColor.withValues(alpha: _boxOpacity),
+                          color: context.watch<ThemeProvider>().boxColor.withValues(alpha: _boxOpacity),
+                          //color: _boxColor.withValues(alpha: _boxOpacity),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
@@ -564,7 +658,8 @@ class _RecentLightConeCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: _boxColor.withValues(alpha: _boxOpacity),
+        color: context.watch<ThemeProvider>().boxColor.withValues(alpha: _boxOpacity),
+        // color: _boxColor.withValues(alpha: _boxOpacity),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
       ),
@@ -578,8 +673,15 @@ class _RecentLightConeCard extends StatelessWidget {
                 height: 85,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: const Color(0xFF6B4FA0),
+                  color: context.watch<ThemeProvider>().thumbnailBoxColor,
                 ),
+              // Container(
+              //   width: 70,
+              //   height: 85,
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(10),
+              //     color: const Color(0xFF6B4FA0),
+              //   ),
                child: item.imagePath != null && item.imagePath!.isNotEmpty
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(10),
@@ -684,7 +786,8 @@ class _RecentGalacticResourceCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: _boxColor.withValues(alpha: _boxOpacity),
+        color: context.watch<ThemeProvider>().boxColor.withValues(alpha: _boxOpacity),
+        //color: _boxColor.withValues(alpha: _boxOpacity),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
       ),
@@ -698,7 +801,8 @@ class _RecentGalacticResourceCard extends StatelessWidget {
                 height: 85,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: const Color(0xFF6B4FA0),
+                  color: context.watch<ThemeProvider>().thumbnailBoxColor,
+                  //color: const Color(0xFF6B4FA0),
                 ),
                 child: item.imagePath != null && item.imagePath!.isNotEmpty
                     ? ClipRRect(
@@ -842,7 +946,8 @@ class _CategoryButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: _boxColor.withValues(alpha: _boxOpacity),
+          color: context.watch<ThemeProvider>().boxColor.withValues(alpha: _boxOpacity),
+          //color: _boxColor.withValues(alpha: _boxOpacity),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
         ),
@@ -859,14 +964,25 @@ class _CategoryButton extends StatelessWidget {
                   child: icon ?? Icon(fallbackIcon, color: Colors.white, size: 40),
                 ),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF7B5EA7),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    '$count',
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: context.watch<ThemeProvider>().isDarkMode
+                      ? const Color(0xFF2854C3).withValues(alpha : 0.8)
+                      : const Color(0xFF7B5EA7),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  '$count',
+                // Container(
+                //   padding:
+                //       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                //   decoration: BoxDecoration(
+                //     color: const Color(0xFF7B5EA7),
+                //     borderRadius: BorderRadius.circular(20),
+                //   ),
+                  // child: Text(
+                  //   '$count',
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -909,10 +1025,13 @@ class _ActionButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
-          color: const Color(0xFF49369E),
+          color: context.watch<ThemeProvider>().actionButtonColor,
+          //color: const Color(0xFF49369E),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-              color:  const Color(0xFF49369E), width: 1),
+          border: Border.all( 
+            color: context.watch<ThemeProvider>().actionButtonColor, width: 1,),
+          // border: Border.all(
+          //     color:  const Color(0xFF49369E), width: 1),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

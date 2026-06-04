@@ -81,6 +81,7 @@ flutter:
   - assets/images/GR_Credit.png
   - assets/images/GR_StellarJade.png
   - assets/images/GR_TrailblazeEXP.png
+  - assets/images/galaxy_bg2.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
