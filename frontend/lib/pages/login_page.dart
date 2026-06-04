@@ -128,7 +128,10 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     });
 
     try {
-      final googleSignIn = GoogleSignIn();
+      final googleSignIn = GoogleSignIn(
+          serverClientId: '130596777964-v51keqek0p2v1mki9d2b5rabp7gpeh2t.apps.googleusercontent.com',
+      );
+
       final account = await googleSignIn.signIn();
 
       if (account == null) {

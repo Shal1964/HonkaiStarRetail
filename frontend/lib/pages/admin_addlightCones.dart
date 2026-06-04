@@ -22,7 +22,7 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
   final _priceController           = TextEditingController();
   final _imageController           = TextEditingController();
 
-  // ── State ───────────────────────────────────────────────────────────────
+  // ── State 
   double _selectedStar = 5.0;
   bool   _isLoading    = false;
 
@@ -52,7 +52,7 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
     super.dispose();
   }
 
-  // ── Kirim data ke Node.js → MySQL ────────────────────────────────────────
+  // ── Kirim data ke Node.js → MySQL 
   Future<void> _saveItem() async {
     final name        = _nameController.text.trim();
     final subType     = _lightConeTypeController.text.trim();

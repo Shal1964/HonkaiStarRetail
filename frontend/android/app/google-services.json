@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "130596777964",
+    "project_id": "honkaistarretail",
+    "storage_bucket": ""
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:130596777964:android:0000000000000000",
+        "android_client_info": {
+          "package_name": "com.hsr.honkai_star_retail"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "130596777964-p7isdaa488nuvi653k88k0iktcqef0e8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hsr.honkai_star_retail",
+            "certificate_hash": "CBF017F31F173ACEEF7C0050F44F863F35B6BC9E"
+          }
+        },
+        {
+          "client_id": "130596777964-v51keqek0p2v1mki9d2b5rabp7gpeh2t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": ""
+        }
+      ],
+      "services": {}
+    }
+  ],
+  "configuration_version": "1"
+}

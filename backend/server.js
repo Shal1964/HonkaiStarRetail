@@ -17,7 +17,7 @@ const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
-  database: process.env.DB_NAME
+  database: process.env.DB_NAME || 'honkai_star_retail'
 });
 
 db.connect((err) => {
@@ -191,6 +191,35 @@ app.post('/auth/register', (req, res) => {
         userId: result.insertId
       });
     });
+  });
+});
+
+// GOOGLE LOGIN
+app.post('/auth/google', (req, res) => {
+  const { email, name } = req.body;
+  if (!email) return res.status(400).json({ error: 'Email required' });
+
+  db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+    if (err) { console.error('Google login SELECT error:', err.message); return res.status(500).json({ error: 'Server error' }); }
+
+    if (results.length > 0) {
+      const user = results[0];
+      const token = crypto.randomBytes(16).toString('hex');
+      tokens[token] = { id: user.id, role: user.role };
+      return res.json({ token, role: user.role, name: user.name });
+    }
+
+    // Auto-register new Google user
+    db.query(
+      'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
+      [name || email, email, ''],
+      (err, result) => {
+        if (err) return res.status(500).json({ error: 'Gagal register Google user' });
+        const token = crypto.randomBytes(16).toString('hex');
+        tokens[token] = { id: result.insertId, role: 'user' };
+        res.json({ token, role: 'user', name: name || email });
+      }
+    );
   });
 });
 
