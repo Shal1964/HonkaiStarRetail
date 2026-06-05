@@ -10,9 +10,6 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// ============================================
-// Database Connection
-// ============================================
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -28,9 +25,6 @@ db.connect((err) => {
   console.log('Connected to MySQL: honkai_star_retail!');
 });
 
-// ============================================
-// Token Management (Dummy/In-Memory)
-// ============================================
 const tokens = {};
 function verifyToken(req, res, next) {
   const auth = req.headers['authorization'];
@@ -41,9 +35,6 @@ function verifyToken(req, res, next) {
   next();
 }
 
-// ============================================
-// LIGHT CONES ROUTES
-// ============================================
 app.get('/light-cones', (req, res) => {
   db.query('SELECT * FROM light_cones', (err, results) => {
     if (err) return res.status(500).json({ error: 'Server error' });
@@ -88,9 +79,6 @@ app.delete('/light-cones/:id', verifyToken, (req, res) => {
   });
 });
 
-// ============================================
-// GALACTIC RESOURCES ROUTES
-// ============================================
 app.get('/galactic-resources', (req, res) => {
   db.query('SELECT * FROM galactic_resources', (err, results) => {
     if (err) return res.status(500).json({ error: 'Server error' });
@@ -133,8 +121,6 @@ app.delete('/galactic-resources/:id', verifyToken, (req, res) => {
   });
 });
 
-
-//AUTH LOGIN
 app.post('/auth/login', (req, res) => {
   const { email, password } = req.body;
 
@@ -148,12 +134,10 @@ app.post('/auth/login', (req, res) => {
 
     const user = results[0];
 
-    // contoh password plain (sementara)
     if (user.password !== password) {
       return res.status(401).json({ error: 'Password salah' });
     }
 
-    // generate token
     const token = crypto.randomBytes(16).toString('hex');
     tokens[token] = { id: user.id, role: user.role };
 
@@ -165,13 +149,10 @@ app.post('/auth/login', (req, res) => {
   });
 });
 
-// UNTUK SIGN UP
 
 app.post('/auth/register', (req, res) => {
   console.log('REGISTER HIT', req.body);
   const { name, email, password } = req.body;
-
-  // cek email sudah ada atau belum
   const checkSql = 'SELECT * FROM users WHERE email = ?';
   db.query(checkSql, [email], (err, results) => {
     if (err) return res.status(500).json({ error: 'Server error' });
@@ -180,7 +161,6 @@ app.post('/auth/register', (req, res) => {
       return res.status(400).json({ error: 'Email sudah terdaftar' });
     }
 
-    // INSERT USER (ROLE OTOMATIS USER)
     const insertSql = 'INSERT INTO users (name, email, password) VALUES (?, ?, ?)';
 
     db.query(insertSql, [name, email, password], (err, result) => {
@@ -194,7 +174,6 @@ app.post('/auth/register', (req, res) => {
   });
 });
 
-// GOOGLE LOGIN
 app.post('/auth/google', (req, res) => {
   const { email, name } = req.body;
   if (!email) return res.status(400).json({ error: 'Email required' });
@@ -208,8 +187,6 @@ app.post('/auth/google', (req, res) => {
       tokens[token] = { id: user.id, role: user.role };
       return res.json({ token, role: user.role, name: user.name });
     }
-
-    // Auto-register new Google user
     db.query(
       'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
       [name || email, email, ''],

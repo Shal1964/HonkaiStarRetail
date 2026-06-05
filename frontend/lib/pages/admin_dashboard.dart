@@ -73,14 +73,12 @@ class AdminDashboard extends StatelessWidget {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: ctx.watch<ThemeProvider>().actionButtonColor,
-              //backgroundColor: const Color(0xFF7B4FD4),
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             ),
             onPressed: () async {
               final newStock = int.tryParse(controller.text);
               if (newStock != null) {
-                // Update ke Database Backend secara permanen
                 final success = await context.read<ItemProvider>().editLightCone(
                   item.id, 
                   stock: newStock
@@ -138,7 +136,6 @@ class AdminDashboard extends StatelessWidget {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: ctx.watch<ThemeProvider>().actionButtonColor,
-              //backgroundColor: const Color(0xFF7B4FD4),
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             ),
@@ -188,7 +185,6 @@ class AdminDashboard extends StatelessWidget {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: ctx.watch<ThemeProvider>().actionButtonColor,
-              //backgroundColor: const Color(0xFFB57BFF),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
             onPressed: () async {
@@ -905,7 +901,6 @@ class _ActionButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
           color: context.watch<ThemeProvider>().actionButtonColor,
-          //color: const Color(0xFF49369E),
           borderRadius: BorderRadius.circular(20),
           border: Border.all( 
             color: context.watch<ThemeProvider>().actionButtonColor, width: 1,),

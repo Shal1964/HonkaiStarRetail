@@ -1,5 +1,3 @@
-
-
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,21 +6,17 @@ import '../provider/item_provider.dart';
 import '../provider/theme_provider.dart';
 
 
-
 const _kPurple      = Color(0xFF49369E);
 const _kBlack25     = Color(0x40000000);
 const _kFooterBg    = Color(0x40000000);
-const _kDescBg      = Color(0x5E918EA1);
-const _kPurpleGlass = Color(0x406D6598);
 const _kPurple80    = Color(0xCC49369E);
 const _kGold        = Color(0xFFFFD700);
 const _kLabelGold   = Color(0xFFEDC531);
 
 
-
 class DetailPage extends StatefulWidget {
   final int    itemId;
-  final String itemType; // 'lightcone' | 'galactic'
+  final String itemType;
   const DetailPage({super.key, required this.itemId, required this.itemType});
 
   @override
@@ -59,7 +53,6 @@ class _DetailPageState extends State<DetailPage> {
         children: [
           Positioned.fill(
             child: Image.asset(context.watch<ThemeProvider>().backgroundImage,fit: BoxFit.cover,),
-           // child: Image.asset('assets/images/Explore_bg.png', fit: BoxFit.cover),
           ),
           Consumer<ItemProvider>(
             builder: (context, provider, _) {
@@ -101,8 +94,6 @@ class _ResolvedItem {
   const _ResolvedItem.lc(LightConeModel m) : lc = m, gr = null;
   const _ResolvedItem.gr(GalacticResourceModel m) : lc = null, gr = m;
 }
-
-
 
 class _LightConeDetail extends StatelessWidget {
   final LightConeModel item;
@@ -152,7 +143,6 @@ class _LightConeDetail extends StatelessWidget {
         
         decoration: BoxDecoration(
           color: themeProvider.boxColor.withOpacity(0.25),
-          //color: _kPurpleGlass,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(color: Colors.white.withOpacity(0.10), width: 1),
         ),
@@ -253,7 +243,6 @@ class _LightConeDetail extends StatelessWidget {
         name: item.name, qty: qty, total: item.price * qty,
         onConfirm: () async {
           Navigator.pop(context);
-          // ✅ Update stock di DB via provider
           final ok = await provider.editLightCone(item.id, stock: item.stock - qty);
           if (context.mounted) {
             if (ok) {
@@ -270,7 +259,6 @@ class _LightConeDetail extends StatelessWidget {
     );
   }
 }
-
 
 
 
@@ -302,7 +290,6 @@ class _GalacticDetail extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           color: themeProvider.boxColor.withOpacity(0.25),
-          // color: _kPurpleGlass,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(color: Colors.white.withOpacity(0.10), width: 1),
         ),
@@ -392,7 +379,6 @@ class _GalacticDetail extends StatelessWidget {
         name: item.name, qty: qty, total: item.price * qty,
         onConfirm: () async {
           Navigator.pop(context);
-          // ✅ Update stock di DB via provider — editGalacticResource
           final ok = await provider.editGalacticResource(item.id, stock: item.stock - qty);
           if (context.mounted) {
             if (ok) {
@@ -509,8 +495,6 @@ class _FooterBar extends StatelessWidget {
     );
   }
 }
-
-// ── Sleeve Card Image — double frame tegak ────────────────────────────────────
 class _SleeveCardImage extends StatelessWidget {
   final String? imagePath;
   const _SleeveCardImage({this.imagePath});
@@ -532,7 +516,6 @@ class _SleeveCardImage extends StatelessWidget {
       width: 150, height: 195,
       child: Stack(
         children: [
-          // Frame belakang (sleeve shadow)
           Positioned(
             right: 0, bottom: 0,
             child: Container(
@@ -543,7 +526,6 @@ class _SleeveCardImage extends StatelessWidget {
               ),
             ),
           ),
-          // Frame depan + gambar
           Positioned(
             left: 0, top: 0,
             child: Container(
@@ -566,7 +548,6 @@ class _SleeveCardImage extends StatelessWidget {
   }
 }
 
-// ── Galactic Image ────────────────────────────────────────────────────────────
 class _GalacticImage extends StatelessWidget {
   final String? imagePath;
   const _GalacticImage({this.imagePath});
@@ -600,8 +581,6 @@ class _GalacticImage extends StatelessWidget {
     );
   }
 }
-
-// ── Qty Control ───────────────────────────────────────────────────────────────
 class _QtyControl extends StatelessWidget {
   final int qty;
   final int stock;
@@ -659,8 +638,6 @@ class _QtyBtn extends StatelessWidget {
     );
   }
 }
-
-// ── Description Box ───────────────────────────────────────────────────────────
 class _DescriptionBox extends StatelessWidget {
   final String? description;
   const _DescriptionBox({this.description});
@@ -673,7 +650,6 @@ class _DescriptionBox extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
       decoration: BoxDecoration(
         color: themeProvider.boxColor.withOpacity(0.37),
-        //color: _kDescBg,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.white.withOpacity(0.10)),
       ),
@@ -732,7 +708,6 @@ class _OtherLCCard extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.pushReplacement(
         context,
-        // ✅ Pass itemType: 'lightcone'
         MaterialPageRoute(builder: (_) => DetailPage(itemId: item.id, itemType: 'lightcone')),
       ),
       child: Container(
@@ -764,16 +739,6 @@ class _OtherLCCard extends StatelessWidget {
                   color: themeProvider.cardBottomBar.withOpacity(0.65),
                 ),
               ),
-              // Positioned(top: 0, left: 0, right: 0,
-              //   child: Container(height: 55,
-              //     decoration: BoxDecoration(
-              //       gradient: LinearGradient(
-              //         begin: Alignment.topCenter, end: Alignment.bottomCenter,
-              //         colors: [Colors.white.withOpacity(0.14), Colors.transparent],
-              //       ),
-              //     ),
-              //   ),
-              // ),
               Column(
                 children: [
                   Padding(
@@ -848,8 +813,6 @@ class _OtherLCCard extends StatelessWidget {
   }
 }
 
-
-
 class _OtherGalacticCard extends StatelessWidget {
   final GalacticResourceModel item;
   const _OtherGalacticCard({required this.item});
@@ -873,14 +836,12 @@ class _OtherGalacticCard extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.pushReplacement(
         context,
-        // ✅ Pass itemType: 'galactic'
         MaterialPageRoute(builder: (_) => DetailPage(itemId: item.id, itemType: 'galactic')),
       ),
       child: Container(
         width: 130,
         decoration: BoxDecoration(
           color: context.watch<ThemeProvider>().boxColor.withOpacity(0.37),
-          //color: Color(0xFF918EA1).withOpacity(0.37),
           borderRadius: BorderRadius.circular(14),
           border: Border.all(color: Color(0xFF1800A2).withOpacity(0.49), width: 1),
         ),
@@ -968,7 +929,6 @@ class _CheckoutDialog extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: onConfirm,
                     style: ElevatedButton.styleFrom(
-                      //final themeProvider = context.watch<ThemeProvider>();
                       backgroundColor: _kPurple80,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
