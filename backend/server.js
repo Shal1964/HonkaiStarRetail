@@ -26,6 +26,10 @@ db.connect((err) => {
 });
 
 const tokens = {};
+function generateToken() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  return Array.from({ length: 20 }, () => chars[crypto.randomInt(0, chars.length)]).join('');
+}
 function verifyToken(req, res, next) {
   const auth = req.headers['authorization'];
   if (!auth || !auth.startsWith('Bearer ')) return res.status(401).json({ error: 'No token provided' });
@@ -183,7 +187,7 @@ app.post('/auth/google', (req, res) => {
 
     if (results.length > 0) {
       const user = results[0];
-      const token = crypto.randomBytes(16).toString('hex');
+      const token = generateToken();
       tokens[token] = { id: user.id, role: user.role };
       return res.json({ token, role: user.role, name: user.name });
     }
@@ -192,7 +196,7 @@ app.post('/auth/google', (req, res) => {
       [name || email, email, ''],
       (err, result) => {
         if (err) return res.status(500).json({ error: 'Gagal register Google user' });
-        const token = crypto.randomBytes(16).toString('hex');
+        const token = generateToken();
         tokens[token] = { id: result.insertId, role: 'user' };
         res.json({ token, role: 'user', name: name || email });
       }

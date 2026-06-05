@@ -76,7 +76,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String _selectedType = 'All';
-  int    _navIndex     = 0;
 
   @override
   void initState() {
@@ -152,7 +151,6 @@ class _HomePageState extends State<HomePage> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
 
     return Scaffold(
-      extendBody: true,
       backgroundColor: Colors.transparent,
       body: Stack(
         children: [
@@ -280,10 +278,6 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
 
-      bottomNavigationBar: _BottomNav(
-        currentIndex: _navIndex,
-        onTap: (i) => setState(() => _navIndex = i),
-      ),
     );
   }
 }

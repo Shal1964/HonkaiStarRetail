@@ -25,6 +25,11 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
   String _errorMessage = '';
   bool _isLoading = false;
 
+  final _googleSignIn = GoogleSignIn(
+    scopes: ['email', 'profile'],
+    serverClientId: '130596777964-v51keqek0p2v1mki9d2b5rabp7gpeh2t.apps.googleusercontent.com',
+  );
+
   late AnimationController _animController;
   late Animation<double> _fadeAnim;
   late Animation<Offset> _slideAnim;
@@ -128,11 +133,8 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     });
 
     try {
-      final googleSignIn = GoogleSignIn(
-          serverClientId: '130596777964-v51keqek0p2v1mki9d2b5rabp7gpeh2t.apps.googleusercontent.com',
-      );
-
-      final account = await googleSignIn.signIn();
+      await _googleSignIn.signOut();
+      final account = await _googleSignIn.signIn();
 
       if (account == null) {
         setState(() {
@@ -318,10 +320,12 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                           keyboardType:
                                               TextInputType.emailAddress,
                                           validator: (v) {
-                                            if (v == null || v.isEmpty)
+                                            if (v == null || v.isEmpty) {
                                               return 'Email wajib diisi';
-                                            if (!v.contains('@'))
+                                            }
+                                            if (!v.contains('@')) {
                                               return 'Format email tidak valid';
+                                            }
                                             return null;
                                           },
                                         ),
@@ -365,8 +369,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                                     !_obscurePassword),
                                           ),
                                           validator: (v) {
-                                            if (v == null || v.isEmpty)
+                                            if (v == null || v.isEmpty) {
                                               return 'Password wajib diisi';
+                                            }
                                             return null;
                                           },
                                         ),
@@ -477,18 +482,6 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                         onTap: _isLoading
                                             ? () {}
                                             : _googleLogin,
-                                      ),
-                                      const SizedBox(width: 30),
-                                      _SocialBtn(
-                                        label: 'assets/images/facebook.png',
-                                        color: Colors.transparent,
-                                        onTap: () {},
-                                      ),
-                                      const SizedBox(width: 30),
-                                      _SocialBtn(
-                                        label: 'assets/images/twitter.png',
-                                        color: Colors.transparent,
-                                        onTap: () {},
                                       ),
                                     ],
                                   ),
