@@ -193,14 +193,14 @@ class _AdminGalacticResourcesState extends State<AdminGalacticResources> {
                       _buildSmallButton(
                         label: 'Edit',
                         icon: Icons.edit_outlined,
-                        color: themeProvider.actionButtonColor,//const Color(0xFF49369E),
+                        color: themeProvider.actionButtonColor,
                         onPressed: () => _showEditDialog(item),
                       ),
                       const SizedBox(width: 8),
                       _buildSmallButton(
                         label: 'Delete',
                         icon: Icons.delete_outline,
-                        color: themeProvider.actionButtonColor,//const Color(0xFF49369E),
+                        color: themeProvider.actionButtonColor,
                         onPressed: () => _confirmDelete(item),
                       ),
                     ],

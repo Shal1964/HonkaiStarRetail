@@ -15,19 +15,15 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage>
     with SingleTickerProviderStateMixin {
-  // ── Controllers ────────────────────────────────────────────
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
-
-  // ── State dari kode baru ───────────────────────────────────
   String _errorMessage = '';
   String _successMessage = '';
   bool _isLoading = false;
 
-  // ── Animasi (dari kode lama) ───────────────────────────────
   late AnimationController _animController;
   late Animation<double> _fadeAnim;
   late Animation<Offset> _slideAnim;
@@ -58,7 +54,6 @@ class _RegisterPageState extends State<RegisterPage>
     super.dispose();
   }
 
-  // ── Register ke backend (dari kode baru) ──────────────────
   Future<void> _onRegister() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -101,14 +96,12 @@ class _RegisterPageState extends State<RegisterPage>
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // ── Galaxy background (kode lama) ──────────────────
           Image.asset(
             'assets/images/galaxy_bg.png',
             fit: BoxFit.cover,
             alignment: Alignment.center,
           ),
 
-          // ── Scrollable content ─────────────────────────────
           SafeArea(
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -122,8 +115,6 @@ class _RegisterPageState extends State<RegisterPage>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const SizedBox(height: 28),
-
-                      // ── Logo (kode lama) ────────────────────
                       Transform.translate(
                         offset: const Offset(0, -30),
                         child: Image.asset(
@@ -136,7 +127,6 @@ class _RegisterPageState extends State<RegisterPage>
 
                       const SizedBox(height: 36),
 
-                      // ── Form card (kode lama) ───────────────
                       Center(
                         child: SizedBox(
                           width: 358,
@@ -160,8 +150,6 @@ class _RegisterPageState extends State<RegisterPage>
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-
-                                  // ── Heading ──────────────────
                                   Center(
                                     child: Column(
                                       children: const [
@@ -189,8 +177,6 @@ class _RegisterPageState extends State<RegisterPage>
                                   ),
 
                                   const SizedBox(height: 20),
-
-                                  // ── Error message (kode baru) ─
                                   if (_errorMessage.isNotEmpty)
                                     Container(
                                       width: double.infinity,
@@ -217,7 +203,6 @@ class _RegisterPageState extends State<RegisterPage>
                                       ),
                                     ),
 
-                                  // ── Success message (kode baru) ─
                                   if (_successMessage.isNotEmpty)
                                     Container(
                                       width: double.infinity,
@@ -245,7 +230,6 @@ class _RegisterPageState extends State<RegisterPage>
                                       ),
                                     ),
 
-                                  // ── Name ─────────────────────
                                   const _FieldLabel('Name'),
                                   const SizedBox(height: 6),
                                   Center(
@@ -269,8 +253,9 @@ class _RegisterPageState extends State<RegisterPage>
                                           controller: _nameController,
                                           hint: 'Enter your name',
                                           validator: (v) {
-                                            if (v == null || v.isEmpty)
+                                            if (v == null || v.isEmpty) {
                                               return 'Name wajib diisi';
+                                            }
                                             return null;
                                           },
                                         ),
@@ -279,8 +264,6 @@ class _RegisterPageState extends State<RegisterPage>
                                   ),
 
                                   const SizedBox(height: 40),
-
-                                  // ── Email ─────────────────────
                                   const _FieldLabel('Email'),
                                   const SizedBox(height: 6),
                                   Center(
@@ -306,10 +289,12 @@ class _RegisterPageState extends State<RegisterPage>
                                           keyboardType:
                                               TextInputType.emailAddress,
                                           validator: (v) {
-                                            if (v == null || v.isEmpty)
+                                            if (v == null || v.isEmpty) {
                                               return 'Email wajib diisi';
-                                            if (!v.contains('@'))
+                                            }
+                                            if (!v.contains('@')) {
                                               return 'Format email tidak valid';
+                                            }
                                             return null;
                                           },
                                         ),
@@ -318,8 +303,6 @@ class _RegisterPageState extends State<RegisterPage>
                                   ),
 
                                   const SizedBox(height: 40),
-
-                                  // ── Password ──────────────────
                                   const _FieldLabel('Password'),
                                   const SizedBox(height: 6),
                                   Center(
@@ -357,10 +340,12 @@ class _RegisterPageState extends State<RegisterPage>
                                                     !_obscurePassword),
                                           ),
                                           validator: (v) {
-                                            if (v == null || v.isEmpty)
+                                            if (v == null || v.isEmpty) {
                                               return 'Password wajib diisi';
-                                            if (v.length < 8)
+                                            }
+                                            if (v.length < 8) {
                                               return 'Minimal 8 karakter';
+                                            }
                                             return null;
                                           },
                                         ),
@@ -369,8 +354,6 @@ class _RegisterPageState extends State<RegisterPage>
                                   ),
 
                                   const SizedBox(height: 28),
-
-                                  // ── Sign Up button ────────────
                                   SizedBox(
                                     width: double.infinity,
                                     height: 52,
@@ -410,8 +393,6 @@ class _RegisterPageState extends State<RegisterPage>
                                   ),
 
                                   const SizedBox(height: 20),
-
-                                  // ── Link ke Login ─────────────
                                   Center(
                                     child: GestureDetector(
                                       onTap: () =>
@@ -460,11 +441,6 @@ class _RegisterPageState extends State<RegisterPage>
     );
   }
 }
-
-// ─────────────────────────────────────────────────────────────
-// Shared widgets (kode lama, tidak diubah)
-// ─────────────────────────────────────────────────────────────
-
 class _FieldLabel extends StatelessWidget {
   const _FieldLabel(this.text);
   final String text;

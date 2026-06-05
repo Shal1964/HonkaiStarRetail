@@ -288,7 +288,7 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.10), // Warna lebih gelap agar terkesan read-only
+                        color: Colors.white.withValues(alpha: 0.10), 
                         borderRadius: BorderRadius.circular(30),
                         border: Border.all(
                           color: Colors.white.withValues(alpha: 0.10), 
@@ -331,7 +331,7 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
                     const SizedBox(height: 20),
                     _buildLabel('Image URL (Opsional)'),
                     _buildTextField(_imageController, 'Paste image link here (https://...)'),
-                    
+
                     const SizedBox(height: 20),
                     SizedBox(
                       width: double.infinity,
@@ -340,12 +340,10 @@ class _AdminAddLightConesState extends State<AdminAddLightCones>
                         onPressed: _isLoading ? null : _saveItem,
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
-                              //const Color(0xFF918EA1).withValues(alpha: 0.37),
                               themeProvider.boxColor.withValues(alpha: 0.20),
                           foregroundColor: Colors.white,
                           disabledBackgroundColor:
                                 themeProvider.boxColor.withValues(alpha: 0.20),
-                              //const Color(0xFF918EA1).withValues(alpha: 0.15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                             side: BorderSide(

@@ -8,15 +8,12 @@ import '../provider/item_provider.dart';
 import 'login_page.dart';
 import 'detail_page.dart';
 import 'admin_dashboard.dart';
-
 import '../provider/theme_provider.dart';
 
 class AppColors {
   static const starGold = Color(0xFFFFD700);
   static const navBar   = Color(0xFF07071A);
 }
-
-
 
 class _CardTheme {
   final List<Color> gradient;
@@ -34,14 +31,11 @@ _CardTheme get _purpleTheme => _CardTheme(
 );
 
 
-
 class _PathCategory {
   final String label;
-  final String? iconAsset; // null = pakai Icons.grid_view
+  final String? iconAsset; 
   const _PathCategory({required this.label, this.iconAsset});
 }
-
-// 9 type hardcode — tidak boleh dikurangi
 const List<_PathCategory> kCategories = [
   _PathCategory(label: 'All',                iconAsset: null),
   _PathCategory(label: 'The Hunt',           iconAsset: 'assets/images/TheHunt.png'),
@@ -54,7 +48,6 @@ const List<_PathCategory> kCategories = [
   _PathCategory(label: 'Galactic Resources', iconAsset: 'assets/images/Galatic.png'),
 ];
 
-// ─── Enum sederhana untuk menandai jenis item di grid ─────────────────────────
 enum _ItemKind { lightCone, galacticResource }
 
 class _GridItem {
@@ -63,7 +56,7 @@ class _GridItem {
   final String    name;
   final String    type;
   final String?   image;
-  final int       rarity; // hanya relevan untuk lightCone
+  final int       rarity; 
   const _GridItem({
     required this.kind,
     required this.id,
@@ -73,8 +66,6 @@ class _GridItem {
     this.rarity = 3,
   });
 }
-
-
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -89,18 +80,15 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // Load data via provider setelah frame pertama selesai
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<ItemProvider>().loadItems();
     });
   }
 
-  // ─── Gabungkan light cones + galactic resources menjadi satu list flat ──────
   List<_GridItem> _buildFilteredItems(ItemProvider provider) {
     final List<_GridItem> result = [];
 
     if (_selectedType == 'All') {
-      // Semua light cone
       for (final lc in provider.lightCones) {
         result.add(_GridItem(
           kind:   _ItemKind.lightCone,
@@ -111,7 +99,6 @@ class _HomePageState extends State<HomePage> {
           rarity: lc.rarity,
         ));
       }
-      // Semua galactic resource
       for (final gr in provider.galacticResources) {
         result.add(_GridItem(
           kind:  _ItemKind.galacticResource,
@@ -122,7 +109,6 @@ class _HomePageState extends State<HomePage> {
         ));
       }
     } else if (_selectedType == 'Galactic Resources') {
-      // Hanya galactic resources
       for (final gr in provider.galacticResources) {
         result.add(_GridItem(
           kind:  _ItemKind.galacticResource,
@@ -133,7 +119,6 @@ class _HomePageState extends State<HomePage> {
         ));
       }
     } else {
-      // Filter light cone berdasarkan type (case-insensitive)
       for (final lc in provider.lightCones) {
         if (lc.type.toLowerCase() == _selectedType.toLowerCase()) {
           result.add(_GridItem(
@@ -147,7 +132,6 @@ class _HomePageState extends State<HomePage> {
         }
       }
     }
-
     return result;
   }
 
@@ -180,17 +164,9 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          // Positioned.fill(
-          //   child: Image.asset(
-          //     'assets/images/Explore_bg.png',
-          //     fit: BoxFit.cover,
-          //   ),
-          // ),
-
-          // ── Konten utama ───────────────────────────────────
+        
           Column(
             children: [
-              // ── HEADER ─────────────────────────────────────
               _Header(
                 onLogout: _logout,
                 onAdmin: () async {
@@ -199,7 +175,7 @@ class _HomePageState extends State<HomePage> {
                       context,
                       MaterialPageRoute(builder: (_) => const AdminDashboard()),
                     );
-                    // Refresh data setelah admin melakukan perubahan
+                    
                     if (mounted) context.read<ItemProvider>().loadItems();
                   }
                 },
@@ -211,13 +187,10 @@ class _HomePageState extends State<HomePage> {
 
               const SizedBox(height: 6),
 
-
-              // ── LOGO BANNER ────────────────────────────────
               const _LogoBanner(),
 
               const SizedBox(height: 20),
 
-              // ── PANEL CARDS ────────────────────────────────
               SizedBox(
                 width: 400,
                 height: 560,
@@ -243,8 +216,6 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         children: [
                           const SizedBox(height: 0),
-
-                          // ── PATH CHIPS — hardcode 9 type ───
                           _PathChipsSection(
                             selected: _selectedType,
                             onSelect: (t) =>
@@ -253,7 +224,6 @@ class _HomePageState extends State<HomePage> {
 
                           const SizedBox(height: 8),
 
-                          // ── CARDS GRID — via provider ──────
                           Expanded(
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(19),
@@ -325,7 +295,6 @@ class _Header extends StatelessWidget {
       constraints: const BoxConstraints(minHeight: 52),
       decoration: BoxDecoration(
         color: context.watch<ThemeProvider>().boxColor.withOpacity(0.37),
-        //color: Color(0XFF918EA1).withOpacity(0.37),
         border: Border(
           bottom: BorderSide(color: Colors.white.withOpacity(0.2), width: 1),
         ),
@@ -487,7 +456,6 @@ class _PathChipsSection extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 6),
         decoration: BoxDecoration(
           color: context.watch<ThemeProvider>().boxColor.withOpacity(0.37),
-          //color: Color(0xFF918EA1).withOpacity(0.37),
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
@@ -520,7 +488,6 @@ class _PathChipsSection extends StatelessWidget {
                       horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
                     color : context.watch<ThemeProvider>().boxColor.withOpacity(0.37),
-                    //color: Color(0xFF918EA1).withOpacity(0.37),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
                       color: isSel
@@ -531,7 +498,6 @@ class _PathChipsSection extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Icon: grid_view untuk All, asset image untuk lainnya
                       cat.iconAsset == null
                           ? const Icon(Icons.grid_view,
                               size: 14, color: Colors.white)
@@ -603,7 +569,6 @@ class _LightConeCard extends StatelessWidget {
   final int index;
   const _LightConeCard({required this.item, required this.index});
 
-  // Icon di sudut card pakai asset sama seperti chips
   Widget _typeIconWidget(String type) {
     const assetMap = {
       'the hunt':           'assets/images/TheHunt.png',
@@ -636,13 +601,7 @@ class _LightConeCard extends StatelessWidget {
     final bool isGalactic = item.kind == _ItemKind.galacticResource;
 
     return GestureDetector(
-      // onTap: () async {
-      //   await Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (_) => DetailPage(itemId: item.id)),
-      //   );
-      // },
+
       onTap: () async {
         await Navigator.push(
           context,
@@ -663,7 +622,6 @@ class _LightConeCard extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors : themeProvider.cardGradient,
-            //colors: theme.gradient,
             stops: const [0.0, 0.5, 1.0],
           ),
           boxShadow: [
@@ -680,17 +638,14 @@ class _LightConeCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           child: Stack(
             children: [
-              // Bottom glow bar
               Positioned(
                 bottom: 0, left: 0, right: 0,
                 child: Container(
                   height: 9,
                   color: themeProvider.cardBottomBar.withOpacity(0.65),
-                  //color: theme.bottomBar.withOpacity(0.65),
                 ),
               ),
 
-              // Top shimmer
               Positioned(
                 top: 0, left: 0, right: 0,
                 child: Container(
@@ -710,7 +665,6 @@ class _LightConeCard extends StatelessWidget {
 
               Column(
                 children: [
-                  // ── Type icon di sudut kiri atas ─────────────
                   Padding(
                     padding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
                     child: Row(
@@ -729,7 +683,6 @@ class _LightConeCard extends StatelessWidget {
                     ),
                   ),
 
-                  // ── Gambar card (miring) ──────────────────────
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(6, 4, 6, 25),
@@ -786,7 +739,6 @@ class _LightConeCard extends StatelessWidget {
                     ),
                   ),
 
-                  // ── Name dari DB ──────────────────────────────
                   Padding(
                     padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                     child: Text(
@@ -804,8 +756,6 @@ class _LightConeCard extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 0),
-
-                  // ── Bawah card: bintang untuk LightCone, type label untuk GalacticResource
                   Padding(
                     padding: const EdgeInsets.only(bottom: 15),
                     child: isGalactic
@@ -854,3 +804,54 @@ class _LightConeCard extends StatelessWidget {
 
 
 
+class _BottomNav extends StatelessWidget {
+  final int currentIndex;
+  final ValueChanged<int> onTap;
+  const _BottomNav({required this.currentIndex, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    const items = [
+      (Icons.home_outlined,          Icons.home_rounded),
+      (Icons.search_outlined,        Icons.search_rounded),
+      (Icons.shopping_cart_outlined, Icons.shopping_cart_rounded),
+      (Icons.person_outline,         Icons.person_rounded),
+    ];
+
+    return Container(
+      height: 47,
+      decoration: BoxDecoration(
+        color: context.watch<ThemeProvider>().boxColor.withOpacity(0.37),
+        border: Border(
+          top: BorderSide(
+              color: Colors.white.withOpacity(0.08), width: 0.8),
+        ),
+      ),
+      child: SafeArea(
+        top: false,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: List.generate(items.length, (i) {
+            final isActive = i == currentIndex;
+            return GestureDetector(
+              onTap: () => onTap(i),
+              behavior: HitTestBehavior.opaque,
+              child: SizedBox(
+                width: 64,
+                child: Center(
+                  child: Icon(
+                    isActive ? items[i].$2 : items[i].$1,
+                    color: isActive
+                        ? Colors.white
+                        : Colors.white.withOpacity(0.38),
+                    size: 32,
+                  ),
+                ),
+              ),
+            );
+          }),
+        ),
+      ),
+    );
+  }
+}
