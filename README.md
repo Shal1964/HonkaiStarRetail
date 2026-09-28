@@ -67,32 +67,32 @@ flutter run
 
 ## Requirements Checklist
 
-### 5 Pages ✅
+### 5 Pages 
 1. Login Page - Standard login + Google OAuth
 2. Register Page - Create new account
 3. Home/Catalog Page - Browse all resources
 4. Item Detail Page - View details + buy items
 5. Admin Manage Page - CRUD operations for resources
 
-### 5 UI Components ✅
+### 5 UI Components 
 1. **Text** - Used for labels, titles, prices
 2. **TextField** - Email, password, quantity inputs
 3. **ElevatedButton** - Login, Register, Buy buttons
 4. **ListView** - Resource catalog list on Home and Admin pages
 5. **Image** - Resource images via Image.network()
 
-### 3 Data Validations ✅
+### 3 Data Validations 
 1. **Login**: Check if email or password is empty → shows error message
 2. **Admin Create/Edit**: Price must be a number greater than 0 → shows error message
 3. **Buy Item**: Quantity must be greater than 0 → shows error message
 
-### Theme Customizations (4 properties) ✅
+### Theme Customizations (4 properties) 
 1. **colorScheme** - Purple primary (#7B61FF) and Gold secondary (#FFB74D)
 2. **scaffoldBackgroundColor** - Dark background (#13131F)
 3. **fontFamily** - Changed to "Segoe UI"
 4. **appBarTheme** - Custom AppBar with dark surface color, white text, centered title
 
-### API Routes ✅
+### API Routes 
 | Method | Route | Auth | Description |
 |--------|-------|------|-------------|
 | GET | /resources | No | Get all resources |
@@ -105,13 +105,13 @@ flutter run
 | DELETE | /resources/:id | Token | Delete resource (admin) |
 | POST | /resources/:id/buy | Token | Buy resource |
 
-### Authentication ✅
+### Authentication 
 - **Standard Login**: Login with email/password stored in MySQL database
 - **External OAuth**: Google Sign-In integration
 - **Bearer Token**: 40-character alphanumeric token generated on login
 - **Token Verification**: Required for all admin operations (create, update, delete)
 
-### CRUD Operations ✅
+### CRUD Operations 
 - **Create**: Admin adds new resource (POST /resources)
 - **Retrieve**: View all resources (GET /resources), view single (GET /resources/:id)
 - **Update**: Admin edits resource (PUT /resources/:id)
